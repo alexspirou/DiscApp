@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Disc.Domain.Entities
+{
+    public class MusicLabel
+    {
+        [Key]
+        public uint LabelId { get; set; }
+        public string LabelName { get; set; } = null!;
+        public IEnumerable<Link>? Links { get; set; }
+        public IEnumerable<ArtistMusicLabel>? Artist { get; set; }
+        public string Country { get; set; } = null!;
+
+    }
+}
