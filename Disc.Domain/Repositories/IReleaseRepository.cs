@@ -5,6 +5,11 @@ namespace Disc.Domain.Repositories
 {
     public interface IReleaseRepository : IGenericRepository<Release>
     {
+        Task<Release> CreateReleaseAsync(Release newRelease);
+        Task<IEnumerable<ReleaseGenre>> CreateReleaseGenreAsync(Release release, Genre genre);
+        Task<IEnumerable<ReleaseStyle>> CreateReleaseStyleAsync(Release release, Style style);
+        Task<Release> GetReleaseByTitleAsync(string name); 
+        Task<Release> GetReleaseByDiscogIdAsync(uint id);
         string GetTitleById(uint id);
         Artist GetArtistById(uint id);
         Country GetCountryById(uint id);

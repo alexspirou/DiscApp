@@ -1,5 +1,5 @@
 ﻿using Disc.Domain.Entities;
-using Domain.Repositories;
+using Disc.Domain.Repositories;
 using Infrastructure.Database;
 
 namespace Disc.Infrastructure.Database.Repositories

@@ -1,4 +1,4 @@
-﻿using Domain.Repositories;
+﻿using Disc.Domain.Repositories;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,6 +17,7 @@ namespace Application
             var assembly = typeof(DependencyInjection).Assembly;
             services.AddMediatR(cnfg => cnfg.RegisterServicesFromAssembly(assembly));
             services.AddValidatorsFromAssembly(assembly);
+
             return services;
         }
     }

@@ -11,23 +11,8 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
     {
 
     }
-    public List<Artist> CreateArtists(List<Artist> newArtist)
-    {
-        var result = CreateArtistsAsync(newArtist).Result;
-        return result;
-    }
 
-    public async Task<List<Artist>> CreateArtistsAsync(List<Artist> newArtists)
-    {
-        var createdArtistsList = new List<Artist>();
-        foreach (var artist in newArtists)
-        {
-            var createdArtist = await CreateArtistAsync(artist);
-            createdArtistsList.Add(createdArtist);
-        }
 
-        return createdArtistsList;
-    }
     public async Task<Artist> CreateArtistAsync(Artist newArtist)
     {
         var foundArtist = await GetArtistByNameAsync(newArtist.ArtistName);
@@ -39,12 +24,16 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
         }
         return newArtist;
     }
+
+
     public Artist CreateArtist(Artist newArtist)
     {
         var foundArtist = GetArtistByName(newArtist.ArtistName);
 
         if (foundArtist is null)
         {
+
+            
             Context.Artist.Add(newArtist);
             Save();
         }
@@ -131,5 +120,31 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
         }
     }
 
+    public List<Artist> GetAllArtists()
+    {
+        try
+        {
+            var test = Context.Artist
+                .Include(a => a.Country)
+                .Include(a =>  a.Release);
 
+                var artists = test.Select(a => new Artist
+                {
+                    ArtistId = a.ArtistId,
+                    ArtistName = a.ArtistName,
+                    RealName = a.RealName,
+                    Release = a.Release != null ? a.Release.ToList() : null,
+                    Country = new Country { CountryName = a.Country.CountryName, CountryId = a.Country.CountryId }
+                })
+                .ToList();
+
+            var s = artists[0].Release.ToList();
+
+            return artists;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Artist Label exception", ex);
+        }
+    }
 }

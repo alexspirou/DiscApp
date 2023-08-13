@@ -78,7 +78,6 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             };
             await InsertAsync(country);
         }
-
         return country;
     }
 

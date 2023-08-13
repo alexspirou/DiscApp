@@ -20,9 +20,7 @@ namespace WebApi
                 .AddInfrastructure()
                 .AddPresentation();
 
-            builder.Services.AddScoped<DiscAppContext>();
-            builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
-            builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+
             builder.Services.AddCors();
 
             builder.Services.AddControllers();

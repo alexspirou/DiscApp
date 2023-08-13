@@ -2,7 +2,6 @@
 
 namespace Disc.Domain.Entities
 {
-
     public class Release
     {
         [Key]

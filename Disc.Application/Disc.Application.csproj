@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Disc.Domain\Disc.Domain.csproj" />
-    <ProjectReference Include="..\Domain\_Domain.csproj" />
   </ItemGroup>
 
 </Project>

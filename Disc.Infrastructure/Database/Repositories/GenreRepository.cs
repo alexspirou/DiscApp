@@ -1,6 +1,6 @@
 ﻿
 using Disc.Domain.Entities;
-using Domain.Repositories;
+using Disc.Domain.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,15 +32,15 @@ namespace Disc.Infrastructure.Database.Repositories
         }
 
 
-        public string GetStyleById(uint id)
+        public Genre GetGenreById(uint id)
         {
-            var result = GetStyleByIdAsync(id).Result;
+            var result = GetGenreByIdAsync(id).Result;
             return result;
         }
 
-        public async Task<string> GetStyleByIdAsync(uint id)
+        public async Task<Genre> GetGenreByIdAsync(uint id)
         {
-            var result = await Context.Style.Include(s => s.StyleName).Where(s => s.StyleId == id).Select(c => c.StyleName).FirstOrDefaultAsync();
+            var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).FirstOrDefaultAsync();
             return result;
         }
     }

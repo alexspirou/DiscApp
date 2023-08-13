@@ -6,7 +6,7 @@ namespace Disc.Domain.Repositories
     {
         public string GetGenreNameById(uint id);
         public Task<string> GetGenreNameByIdAsync(uint id);
-        public string GetStyleById(uint id);
-        public Task<string> GetStyleByIdAsync(uint id);
+        public Genre GetGenreById(uint id);
+        public Task<Genre> GetGenreByIdAsync(uint id);
     }
 }
