@@ -6,7 +6,7 @@ namespace Disc.Domain.Entities
     {
         [Key]
         public uint StyleId { get; set; }
-        public string StyleName { get; set; } = null!;
+        public string StyleName { get; set; }
         public IEnumerable<ReleaseStyle> ReleaseStyle { get; set; }
 
     }

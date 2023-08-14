@@ -66,7 +66,7 @@ public class MusicLabelRepository : GenericRepository<MusicLabel>, ILabelReposit
 
         if (musicLabel == null)
         {
-            musicLabel = new MusicLabel { LabelName = labelName, Country = country.CountryName, Artist = artist, Links = links };
+            musicLabel = new MusicLabel { LabelName = labelName, Country = country, Artist = artist, Links = links };
             Insert(musicLabel);
         }
 

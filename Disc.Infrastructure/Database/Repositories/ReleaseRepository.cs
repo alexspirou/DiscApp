@@ -47,24 +47,23 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
             }
         };
 
-        await InsertAsync(release);
-
         return ReleaseGenre;
     }
 
     public async Task<IEnumerable<ReleaseStyle>> CreateReleaseStyleAsync(Release release, Style style)
     {
-        var ReleaseStyle = release.ReleaseStyle = new List<ReleaseStyle>
+        var newReleaseStyleList = new List<ReleaseStyle>();
+
+        var releaseStyle = new ReleaseStyle
         {
-            new ReleaseStyle
-            {
-                Style = style,
-            }
+            Release = release,
+            Style = style
         };
+        newReleaseStyleList.Add(releaseStyle);
 
         await InsertAsync(release);
 
-        return ReleaseGenre;
+        return newReleaseStyleList;
     }
 
     public async Task<Release> GetReleaseByDiscogIdAsync(uint discogdId)

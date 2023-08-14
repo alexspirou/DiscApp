@@ -4,7 +4,7 @@
     {
         public uint ArtistId { get; set; }
         public uint LinkId { get; set; }
-        public Artist Artist { get; set; } = null!;
-        public Link Link { get; set; } = null!;
+        public Artist Artist { get; set; } 
+        public Link Link { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace Application
             var assembly = typeof(DependencyInjection).Assembly;
             services.AddMediatR(cnfg => cnfg.RegisterServicesFromAssembly(assembly));
             services.AddValidatorsFromAssembly(assembly);
+            services.AddAutoMapper(assembly);
 
             return services;
         }

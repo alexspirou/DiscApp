@@ -6,7 +6,7 @@ namespace Disc.Domain.Entities
     {
         [Key]
         public uint CountryId { get; set; }
-        public string CountryName { get; set; } = null!;
+        public string CountryName { get; set; }
         public IEnumerable<Release> Release { get; set; }
         public IEnumerable<Artist> Artists { get; set; }
 

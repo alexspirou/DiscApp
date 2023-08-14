@@ -6,7 +6,7 @@ namespace Disc.Domain.Entities
     {
         [Key]
         public uint LinkId { get; set; }
-        public string SiteUrl { get; set; } = null!;
+        public string SiteUrl { get; set; }
         public IEnumerable<ArtistLink> Artist { get; set; }
 
     }

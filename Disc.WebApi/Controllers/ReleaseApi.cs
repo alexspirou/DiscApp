@@ -1,5 +1,5 @@
-﻿using Application.Artists.Commands.CreateArtist;
-using Disc.Application.Releases.Commands.CreateRelease;
+﻿using Application.ArtistOperations.Commands.CreateArtist;
+using Disc.Application.ReleaseOperations.Commands.CreateRelease;
 using Disc.Domain.Entities;
 using Disc.Domain.Repositories;
 using Disc.WebApi.Dummy;
@@ -26,35 +26,11 @@ namespace Disc.WebApi.Controllers
             _artistRepository = artistRepository;
         }
 
-        [HttpPost, Route("CreateReleaseDummy")]
-        public async Task<IActionResult> CreateReleaseDummy()
+        [HttpPost, Route("CreateReleaseDummy/{release}")]
+        public async Task<IActionResult> CreateReleaseDummy([FromQuery] uint artistId, [FromQuery] uint countryId, [FromQuery] uint conditionId,   Release release)
         {
-            var releaseList = new List<Release>();
-
-            var release = new Release()
-            {
-                Artist = await _artistRepository.GetArtistByNameAsync("AlexSpyrou"),
-                Country = new Country() { CountryName = "USA" },
-                ReleaseGenre = new List<ReleaseGenre>()
-                {
-                    new ReleaseGenre(){
-                        Genre = new Genre(){GenreName = "Electronic"},
-                    }
-                },
-                ReleaseStyle = new List<ReleaseStyle>()
-                {
-                    new ReleaseStyle(){
-                        Style = new Style(){StyleName = "Techno"},
-                    }
-                },
-                DiscogsId = 40494,
-                Title = "O.M.X – Turn On",
-                ReleaseYear = 1994
-
-            };
-            releaseList.Add(release);
-            var command = new CreateReleaseCommand(releaseList);
-            var result = await _mediator.Send(command);
+            //var command = new CreateReleaseCommand(release);
+            //var result = await _mediator.Send(command);
 
             return Ok();
         }

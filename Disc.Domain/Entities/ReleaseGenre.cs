@@ -4,7 +4,7 @@
     {
         public uint ReleaseId { get; set; }
         public uint GenreId { get; set; }
-        public Release Release { get; set; } = null!;
-        public Genre Genre { get; set; }= null!;
+        public Release Release { get; set; }
+        public Genre Genre { get; set; }
     }
 }

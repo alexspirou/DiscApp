@@ -1,7 +1,7 @@
 ﻿using Disc.Domain.Entities;
 using MediatR;
 
-namespace Application.Artists.Commands.CreateArtist
+namespace Application.ArtistOperations.Commands.CreateArtist
 {
     public sealed class CreateArtistCommand : IRequest<List<Artist>>
     {

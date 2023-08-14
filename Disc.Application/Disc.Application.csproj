@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Disc.Domain\Disc.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\CountryOperation\Queries\" />
   </ItemGroup>
 
 </Project>

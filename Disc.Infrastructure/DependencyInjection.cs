@@ -15,6 +15,7 @@ namespace Disc.Infrastructure
             services.AddScoped<IArtistRepository, ArtistRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IReleaseRepository, ReleaseRepository>();
+            services.AddScoped<IReleaseStyleRepository, ReleaseStyleRepository>();
             return services;
         }
     }

@@ -1,4 +1,4 @@
-using Application.Artists.Commands.CreateArtist;
+using Application.ArtistOperations.Commands.CreateArtist;
 using Disc.Application.Artists.Queries.GetAllArtist;
 using Disc.Domain.Entities;
 using MediatR;

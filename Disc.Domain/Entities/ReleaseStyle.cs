@@ -4,7 +4,7 @@
     {
         public uint ReleaseId { get; set; }
         public uint StyleId { get; set; } 
-        public Release Release { get; set; } = null!;
-        public Style Style { get; set; } = null!;
+        public Release Release { get; set; }
+        public Style Style { get; set; }
     }
 }

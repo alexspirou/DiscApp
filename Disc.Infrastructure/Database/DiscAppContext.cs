@@ -1,4 +1,5 @@
 ﻿using Disc.Domain.Entities;
+using Disc.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database
@@ -14,6 +15,7 @@ namespace Infrastructure.Database
         public DbSet<MusicLabel> Label { get; set; } = null!;
         public DbSet<Link> Link { get; set; } = null!;
         public DbSet<User> User { get; set; } = null!;
+        public DbSet<ReleaseStyle> ReleaseStyle { get; set; } = null!;
 
         public DiscAppContext()
         {

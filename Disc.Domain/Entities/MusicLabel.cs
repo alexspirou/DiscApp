@@ -6,10 +6,10 @@ namespace Disc.Domain.Entities
     {
         [Key]
         public uint LabelId { get; set; }
-        public string LabelName { get; set; } = null!;
+        public string LabelName { get; set; }
         public IEnumerable<Link>? Links { get; set; }
         public IEnumerable<ArtistMusicLabel>? Artist { get; set; }
-        public string Country { get; set; } = null!;
+        public Country Country { get; set; }
 
     }
 }

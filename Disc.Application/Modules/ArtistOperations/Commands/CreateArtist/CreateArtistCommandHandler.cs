@@ -1,8 +1,9 @@
-﻿using Disc.Domain.Entities;
+﻿using Application.ArtistOperations.Commands.CreateArtist;
+using Disc.Domain.Entities;
 using Disc.Domain.Repositories;
 using MediatR;
 
-namespace Application.Artists.Commands.CreateArtist
+namespace Disc.Application.Modules.ArtistOperations.Commands.CreateArtist
 {
     public class CreateArtistCommandHandler : IRequestHandler<CreateArtistCommand, List<Artist>>
     {
