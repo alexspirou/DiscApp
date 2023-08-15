@@ -16,6 +16,7 @@ namespace Disc.Infrastructure
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IReleaseRepository, ReleaseRepository>();
             services.AddScoped<IReleaseStyleRepository, ReleaseStyleRepository>();
+            services.AddScoped<IConditionRepository, ConditioRepository>();
             return services;
         }
     }

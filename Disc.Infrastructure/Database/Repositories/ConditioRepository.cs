@@ -13,25 +13,73 @@ public class ConditioRepository : GenericRepository<Condition>, IConditionReposi
 
     }
 
+    public async Task<Condition> CreateConditonAsync(Condition newConditon)
+    {
+        try
+        {
+            Context.Condition.Add(newConditon);
+            await SaveAsync();
+            return newConditon;
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Condtion exceptions", ex);
+        }
+
+    }
+
+    public async Task<Condition> GetConditionByIdAsync(uint id)
+    {
+        try
+        {
+            var result = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c).FirstOrDefaultAsync();
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Condtion exceptions", ex);
+        }
+    }
+
+    public async Task<Condition> GetConditionByNameAsync(string conditionName)
+    {
+        try
+        {
+            var result = await Context.Condition.Where(c => c.ConditionName == conditionName).Select(c => c).FirstOrDefaultAsync();
+            return result;
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Condtion exceptions", ex);
+        }
+    }
+
     public string GetConditionNameById(uint id)
     {
-        var conditionName = GetConditionNameByIdAsync(id).Result;
-        return conditionName;
+        try
+        {
+            var conditionName = GetConditionNameByIdAsync(id).Result;
+            return conditionName;
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Condtion exceptions", ex);
+        }
+
     }
     public async Task<string> GetConditionNameByIdAsync(uint id)
     {
-        var conditionName = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c.ConditionName).FirstOrDefaultAsync();
-        return conditionName;
+        try
+        {
+            var conditionName = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c.ConditionName).FirstOrDefaultAsync();
+            return conditionName;
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Condtion exceptions", ex);
+        }
+
     }
 
-    public IEnumerable GetReleaseByConditionId(uint id)
-    {
-        var releases = Context.Condition.Include(c => c.Release).Where(c => c.ConditionId == id).Select(c => c.Release).FirstOrDefault();
-        return releases;
-    }
-    public async Task<IEnumerable> GetReleaseByConditionIdAsync(uint id)
-    {
-        var releases = await Context.Condition.Include(c => c.Release).Where(c => c.ConditionId == id).Select(c => c.Release).FirstOrDefaultAsync();
-        return releases;
-    }
+
 }

@@ -5,8 +5,11 @@ namespace Disc.Domain.Repositories
 {
     public interface IConditionRepository : IGenericRepository<Condition>
     {
-        string GetConditionNameById(uint id);
-        IEnumerable GetReleaseByConditionId(uint id);
+        Task<Condition> CreateConditonAsync(Condition newConditon);
+        Task<string> GetConditionNameByIdAsync(uint id);
+
+        Task<Condition> GetConditionByNameAsync(string conditionName);
+        Task<Condition> GetConditionByIdAsync(uint id);
     }
 }
 
