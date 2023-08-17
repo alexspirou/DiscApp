@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using Disc.Application.CountryOperations;
-using Disc.Application.Modules.ConditionOperations;
+using Disc.Application.DTOs.Condition;
+using Disc.Application.DTOs.Country;
+using Disc.Application.DTOs.Genre;
+using Disc.Application.DTOs.Style;
 using Disc.Domain.Entities;
 
 namespace Disc.Application.Mapping
@@ -15,7 +17,14 @@ namespace Disc.Application.Mapping
             CreateMap<CountryDto, Country>(); 
             // Condition
             CreateMap<Condition, ConditionDto>();
-            CreateMap<ConditionDto, Condition>();
+            CreateMap<ConditionDto, Condition>();    
+            // Genre
+            CreateMap<Genre, CreateGenreDto>();
+            CreateMap<CreateGenreDto, Genre>();   
+            // Style
+            CreateMap<Style, CreateStyleDto>();
+            CreateMap<CreateStyleDto, Style>();
+
         }
 
     }

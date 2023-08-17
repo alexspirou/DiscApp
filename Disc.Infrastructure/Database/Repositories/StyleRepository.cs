@@ -12,17 +12,40 @@ namespace Disc.Infrastructure.Database.Repositories
         {
 
         }
-
-        public string GetStyleNameById(uint id)
+        public async Task<Style> CreateStyleAsync(Style newStyle)
         {
-            var styleName = Context.Style.Where(s => s.StyleId == id).Select(c => c.StyleName).FirstOrDefault();
-            return styleName;
+            Context.Style.Add(newStyle);
+            await SaveAsync();
+            return newStyle;    
         }
 
-        public IEnumerable GetReleaseStyle(uint id)
+
+        public async Task<string> GetStyleNameByIdAsync(uint id)
         {
-            var styleName = Context.Style.Include(s => s.ReleaseStyle).Where(s => s.StyleId == id).Select(c => c.ReleaseStyle);
-            return styleName;
+            try
+            {
+                var result = await Context.Style.Where(s => s.StyleId == id).Select(c => c.StyleName).FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Style exceptions", ex);
+            }
+
+        }
+
+        public async Task<Style> GetStyleByNameAsync(string name)
+        {
+            try
+            {
+                var result = await Context.Style.Where(s => s.StyleName == name).FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Style exceptions", ex);
+            }
+
         }
     }
 

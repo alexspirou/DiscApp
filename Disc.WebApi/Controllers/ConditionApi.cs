@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Disc.Application.CountryOperations.Commands.CreateCountry;
-using Disc.Application.Modules.ConditionOperations;
-using Disc.Application.Modules.ConditionOperations.Commands.CreateCondition;
+using Disc.Application.DTOs.Condition;
+using Disc.Application.Requests.ConditionOperations.Commands.CreateCondition;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

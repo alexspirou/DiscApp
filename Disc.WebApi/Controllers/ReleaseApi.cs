@@ -1,12 +1,7 @@
-﻿using Application.ArtistOperations.Commands.CreateArtist;
-using Disc.Application.ReleaseOperations.Commands.CreateRelease;
-using Disc.Domain.Entities;
+﻿using Disc.Domain.Entities;
 using Disc.Domain.Repositories;
-using Disc.WebApi.Dummy;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Controllers;
-using WebApi.Dummy;
 
 namespace Disc.WebApi.Controllers
 {

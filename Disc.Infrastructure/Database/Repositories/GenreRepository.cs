@@ -12,6 +12,33 @@ namespace Disc.Infrastructure.Database.Repositories
         {
 
         }
+
+        public async Task<Genre> CreateGenreAsync(Genre newGenre)
+        {
+            try
+            {
+                Context.Genre.Add(newGenre);
+                await SaveAsync();
+                return newGenre;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Genre exceptions", ex);
+            }
+        }
+
+        public async Task<Genre> GetGenreByNameAsync(string name)
+        {
+            try
+            {
+                var result = await Context.Genre.Where(genre => genre.GenreName == name).FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Artist exception", ex);
+            }
+        }
         public string GetGenreNameById(uint id)
         {
             var result = GetGenreNameByIdAsync(id).Result;
@@ -43,5 +70,7 @@ namespace Disc.Infrastructure.Database.Repositories
             var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).FirstOrDefaultAsync();
             return result;
         }
+
+
     }
 }

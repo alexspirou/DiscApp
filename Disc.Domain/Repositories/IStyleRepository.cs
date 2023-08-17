@@ -5,7 +5,8 @@ namespace Disc.Domain.Repositories
 {
     public interface IStyleRepository : IGenericRepository<Style>
     {
-        string GetStyleNameById(uint id);
-        IEnumerable GetReleaseStyle(uint id);
+        Task<Style> CreateStyleAsync(Style newStyle);
+        Task<string> GetStyleNameByIdAsync(uint id);
+        Task<Style> GetStyleByNameAsync(string name);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Disc.Application.CountryOperations;
-using Disc.Application.CountryOperations.Commands.CreateCountry;
+using Disc.Application.DTOs.Country;
+using Disc.Application.Requests.CountryOperations.Commands.CreateCountry;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
-using Application.ArtistOperations.Commands.CreateArtist;
-using Disc.Application.Artists.Queries.GetAllArtist;
+using Disc.Application.Requests.ArtistOperations.Commands.CreateArtist;
+using Disc.Application.Requests.ArtistsOperations.Queries.GetAllArtist;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +29,10 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost, Route("CreateArtistDummy")]
-        public async Task<IActionResult> CreateArtistDummy()
+        [HttpPost, Route("CreateArtist/Artist")]
+        public async Task<IActionResult> CreateArtist(Artist newArtist)
         {
-            var artistReader = new ArtistReader();
-            var artistPath = "C:\\Users\\alexs\\Desktop\\djs.txt";
-            var artists = artistReader.ReadArtists(artistPath);
-            var command = new CreateArtistCommand(artists);
+            var command = new CreateArtistCommand(newArtist);
             var result = await _mediator.Send(command);
 
             return Ok();

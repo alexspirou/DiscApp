@@ -1,10 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Requests\ConditionOperations\Queries\**" />
+    <Compile Remove="Requests\CountryOperations\Queries\**" />
+    <EmbeddedResource Remove="Requests\ConditionOperations\Queries\**" />
+    <EmbeddedResource Remove="Requests\CountryOperations\Queries\**" />
+    <None Remove="Requests\ConditionOperations\Queries\**" />
+    <None Remove="Requests\CountryOperations\Queries\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
@@ -17,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\ConditionOperations\Queries\" />
-    <Folder Include="Modules\CountryOperations\Queries\" />
+    <Folder Include="DTOs\Artist\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
