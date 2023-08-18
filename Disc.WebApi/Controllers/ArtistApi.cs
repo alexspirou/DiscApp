@@ -1,9 +1,11 @@
+using AutoMapper;
+using Disc.Application.DTOs.Artist;
 using Disc.Application.Requests.ArtistOperations.Commands.CreateArtist;
 using Disc.Application.Requests.ArtistsOperations.Queries.GetAllArtist;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Dummy;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers
 {
@@ -14,11 +16,13 @@ namespace WebApi.Controllers
 
         private readonly ILogger<ArtistApi> _logger;
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public ArtistApi(ILogger<ArtistApi> logger, IMediator mediator)
+        public ArtistApi(ILogger<ArtistApi> logger, IMediator mediator, IMapper mapper)
         {
             _logger = logger;
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpGet(Name = "GetArtist")]
@@ -29,13 +33,32 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost, Route("CreateArtist/Artist")]
-        public async Task<IActionResult> CreateArtist(Artist newArtist)
+        [HttpPost, Route("CreateArtist/newArtist")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> CreateArtist(CreateArtistDto newArtist)
         {
-            var command = new CreateArtistCommand(newArtist);
+            var artistMap = _mapper.Map<Artist>(newArtist);
+            var command = new CreateArtistCommand(artistMap);
             var result = await _mediator.Send(command);
 
             return Ok();
+        } 
+        
+        [HttpPost, Route("CreateArtist/newArtists")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> CreateArtist(CreateArtistDto[] newArtists)
+        {
+            var result = new List<Artist>();
+            foreach (var newArtist in newArtists)
+            {
+                var command = new CreateArtistCommand(_mapper.Map<Artist>(newArtist));
+                var createdArtist = await _mediator.Send(command);
+
+                result.Add(createdArtist);
+            }
+            return Ok(JsonConvert.SerializeObject(result));
         }
     }
 }

@@ -20,27 +20,27 @@ namespace Disc.WebApi.Controllers
             _mapper = mapper;
 
         }
-        [HttpPost, Route("CreateCondition/{conditionDto}")]
+        [HttpPost, Route("CreateCondition/{newCondition}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateCondition([FromBody] ConditionDto conditionDto)
+        public async Task<IActionResult> CreateCondition([FromBody] ConditionDto newCondition)
         {
-            var conditionMap = _mapper.Map<Condition>(conditionDto);
+            var conditionMap = _mapper.Map<Condition>(newCondition);
             var command = new CreateConditionCommand(conditionMap);
             var result = await _mediator.Send(command);
 
             return Ok(result);
         }        
         
-        [HttpPost, Route("CreateConditions/{conditionsDto}")]
+        [HttpPost, Route("CreateConditions/{newCondition}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateConditions([FromBody] ConditionDto [] conditionDtos)
+        public async Task<IActionResult> CreateConditions([FromBody] ConditionDto [] newConditions)
         {
             var result = new List<Condition>();
-            foreach(var conditionDto in conditionDtos)
+            foreach(var newCondition in newConditions)
             {
-                var conditionMap = _mapper.Map<Condition>(conditionDto);
+                var conditionMap = _mapper.Map<Condition>(newCondition);
                 var command = new CreateConditionCommand(conditionMap);
                 result.Add(await _mediator.Send(command));
             }

@@ -3,6 +3,7 @@ using Disc.Domain.Repositories;
 using Disc.Infrastructure;
 using Disc.Infrastructure.Database.Repositories;
 using Infrastructure.Database;
+using Newtonsoft.Json;
 using Presentation;
 using Serilog;
 
@@ -32,7 +33,11 @@ namespace WebApi
             configuration.ReadFrom.Configuration(context.Configuration));
 
             var app = builder.Build();
-
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Newtonsoft.Json.Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

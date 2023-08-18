@@ -3,16 +3,13 @@ using MediatR;
 
 namespace Disc.Application.Requests.ArtistOperations.Commands.CreateArtist
 {
-    public sealed class CreateArtistCommand : IRequest<List<Artist>>
+    public sealed class CreateArtistCommand : IRequest<Artist>
     {
-        public List<Artist> Artists { get; set; }
-        public CreateArtistCommand(List<Artist> artists)
-        {
-            Artists = artists;
-        }
+        public Artist Artist { get; set; }
         public CreateArtistCommand(Artist artist)
         {
-            
+            Artist = artist;
         }
+
     }
 }

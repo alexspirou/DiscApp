@@ -25,16 +25,16 @@ namespace Disc.WebApi.Controllers
             _mapper = mapper;   
         }
 
-        [HttpPost, Route("CreateStyles/{styleDtos}")]
+        [HttpPost, Route("CreateStyles/{newStyles}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateStyles([FromBody] CreateStyleDto[] styleDtos)
+        public async Task<IActionResult> CreateStyles([FromBody] CreateStyleDto[] newStyles)
         {
             var result = new List<Style>();
-            foreach (var styleDto in styleDtos)
+            foreach (var newStyle in newStyles)
             {
-                var genreMap = _mapper.Map<Style>(styleDto);
-                var command = new CreateStyleCommand(genreMap);
+                var styleMap = _mapper.Map<Style>(newStyle);
+                var command = new CreateStyleCommand(styleMap);
                 result.Add(await _mediator.Send(command));
             }
             return Ok(result);

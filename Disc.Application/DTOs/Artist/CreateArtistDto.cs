@@ -1,6 +1,4 @@
 ﻿namespace Disc.Application.DTOs.Artist
 {
-    public class CreateArtistDto
-    {
-    }
+    public record CreateArtistDto(string ArtistName, string RealName, string Country);
 }

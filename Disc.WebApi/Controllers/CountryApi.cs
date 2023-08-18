@@ -18,25 +18,25 @@ namespace Disc.WebApi.Controllers
             _mediator = mediator;
             _mapper = mapper;
         }
-        [HttpPost, Route("CreateCountry/{countryDto}")]
+        [HttpPost, Route("CreateCountry/{newCountry}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateCountry([FromBody] CountryDto countryDto)
+        public async Task<IActionResult> CreateCountry([FromBody] CountryDto newCountry)
         {
-            var countryMap = _mapper.Map<Country>(countryDto);
+            var countryMap = _mapper.Map<Country>(newCountry);
             var command = new CreateCountryCommand(countryMap);
             var result = await _mediator.Send(command);
 
             return Ok(result);
         }
 
-        [HttpPost, Route("CreateCountries/{countriesDto}")]
+        [HttpPost, Route("CreateCountries/{newCountries}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateCountries([FromBody] CountryDto[] countriesDto)
+        public async Task<IActionResult> CreateCountries([FromBody] CountryDto[] newCountries)
         {
             var result = new List<Country>();
-            foreach (var countryDto in countriesDto)
+            foreach (var countryDto in newCountries)
             {
                 var countryMap = _mapper.Map<Country>(countryDto);
                 var command = new CreateCountryCommand(countryMap);

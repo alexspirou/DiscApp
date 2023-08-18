@@ -17,15 +17,15 @@ namespace Disc.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Route("CreateGenres/{genreDtos}")]
+        [HttpPost, Route("CreateGenres/{newGenres}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateConditions([FromBody] CreateGenreDto[] genreDtos)
+        public async Task<IActionResult> CreateConditions([FromBody] CreateGenreDto[] newGenres)
         {
             var result = new List<Genre>();
-            foreach (var conditionDto in genreDtos)
+            foreach (var newGenre in newGenres)
             {
-                var genreMap = _mapper.Map<Genre>(conditionDto);
+                var genreMap = _mapper.Map<Genre>(newGenre);
                 var command = new CreateGenreCommand(genreMap);
                 result.Add(await _mediator.Send(command));
             }
