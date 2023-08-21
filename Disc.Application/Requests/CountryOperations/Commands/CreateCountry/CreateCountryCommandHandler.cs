@@ -1,6 +1,6 @@
-﻿using Disc.Domain.Repositories;
-using Disc.Domain.Entities;
+﻿using Disc.Domain.Entities;
 using MediatR;
+using Disc.Domain.Abstractions.Repositories;
 
 namespace Disc.Application.Requests.CountryOperations.Commands.CreateCountry
 {

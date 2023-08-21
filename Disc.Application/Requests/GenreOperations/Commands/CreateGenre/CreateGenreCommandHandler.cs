@@ -1,6 +1,6 @@
 ﻿using Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease;
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
-using Disc.Domain.Repositories;
 using MediatR;
 
 namespace Disc.Application.Requests.GenreOperations.Commands.CreateGenre

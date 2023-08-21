@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Disc.Application.DTOs.Style
+namespace Disc.Domain.Abstractions
 {
-    public class CreateStyleDto
+    public interface IDiscogsDetailsProvider
     {
-        public string StyleName { get; set; }
+
     }
 }

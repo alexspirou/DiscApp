@@ -1,6 +1,6 @@
 ﻿
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
-using Disc.Domain.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +12,18 @@ namespace Disc.Infrastructure.Database.Repositories
         {
 
         }
-
+        public async Task<uint> GetGenreIdByName(string name)
+        {
+            try
+            {
+                var result = await Context.Genre.Where(genre => genre.GenreName == name).Select(x=>x.GenreId).FirstAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Genre exception", ex);
+            }
+        }
         public async Task<Genre> CreateGenreAsync(Genre newGenre)
         {
             try
@@ -71,6 +82,6 @@ namespace Disc.Infrastructure.Database.Repositories
             return result;
         }
 
-
+ 
     }
 }

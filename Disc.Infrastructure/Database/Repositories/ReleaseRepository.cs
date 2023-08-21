@@ -1,6 +1,7 @@
 ﻿using Azure;
+using Azure.Core;
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
-using Disc.Domain.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -36,34 +37,40 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
         return release;
     }
 
-    public async Task<IEnumerable<ReleaseGenre>> CreateReleaseGenreAsync(Release release, Genre genre)
+    public async Task<IEnumerable<ReleaseGenre>> CreateReleaseGenreAsync(Release release, Genre[] genres)
     {
-        var ReleaseGenre =  release.ReleaseGenre = new List<ReleaseGenre>
-        { 
-            new ReleaseGenre
+        var releaseGenre = new List<ReleaseGenre>();
+        foreach(var genre in genres)
+        {
+            releaseGenre.Add(new ReleaseGenre
             {
                 Genre = genre,
                 Release = release
-            }
-        };
+            });
+        }
+        release.ReleaseGenre = releaseGenre;
 
-        return ReleaseGenre;
+        await UpdateAsync(release);
+        return releaseGenre;
     }
 
-    public async Task<IEnumerable<ReleaseStyle>> CreateReleaseStyleAsync(Release release, Style style)
+    public async Task<IEnumerable<ReleaseStyle>> CreateReleaseStyleAsync(Release release, Style[] styles)
     {
-        var newReleaseStyleList = new List<ReleaseStyle>();
-
-        var releaseStyle = new ReleaseStyle
+        var releaseStyle = new List<ReleaseStyle>();
+        foreach (var reqStyle in styles)
         {
-            Release = release,
-            Style = style
-        };
-        newReleaseStyleList.Add(releaseStyle);
+            releaseStyle.Add(new ReleaseStyle()
+            {
+                Style = reqStyle,
+                Release = release
+            }); 
+        }
+        release.ReleaseStyle = releaseStyle;
 
-        await InsertAsync(release);
+        await UpdateAsync(release);
 
-        return newReleaseStyleList;
+        return releaseStyle;
+
     }
 
     public async Task<Release> GetReleaseByDiscogIdAsync(uint discogdId)
@@ -131,7 +138,7 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
     {
         try
         {
-            return Context.Release.Where(disc => disc.DiscogsId == id).Select(artist => artist.ReleaseStyle);
+            return Context.Release.Where(disc => disc.DiscogsId == id).Select(artist => artist.ReleaseStyle).SingleOrDefault();
         }
         catch (Exception ex)
         {
@@ -176,7 +183,6 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
             throw new Exception("Disc excpeption", ex);
         }
     }
-
 
 
 }

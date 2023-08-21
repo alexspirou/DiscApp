@@ -1,7 +1,7 @@
 ﻿using Disc.Domain.Entities;
 using System.Collections;
 
-namespace Disc.Domain.Repositories
+namespace Disc.Domain.Abstractions.Repositories
 {
     public interface ICountryRepository : IGenericRepository<Country>
     {

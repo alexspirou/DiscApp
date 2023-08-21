@@ -6,6 +6,7 @@ using Disc.Application.DTOs.Genre;
 using Disc.Application.DTOs.Release;
 using Disc.Application.DTOs.Style;
 using Disc.Domain.Entities;
+using System.Data;
 
 namespace Disc.Application.Mapping
 {
@@ -21,36 +22,38 @@ namespace Disc.Application.Mapping
             CreateMap<Condition, ConditionDto>();
             CreateMap<ConditionDto, Condition>();
             // Genre
-            CreateMap<Genre, CreateGenreDto>();
-            CreateMap<CreateGenreDto, Genre>();
+            CreateMap<Genre, GenreDto>();
+            CreateMap<GenreDto, Genre>();
             // Style
-            CreateMap<Style, CreateStyleDto>();
-            CreateMap<CreateStyleDto, Style>();
+            CreateMap<Style, StyleDto>();
+            CreateMap<StyleDto, Style>();
             // Artist
             CreateMap<Artist, CreateArtistDto>().ForMember(artistDto =>
             artistDto.Country, m => m.MapFrom(a => a.Country.CountryName));
 
             CreateMap<CreateArtistDto, Artist>().ForMember(artist =>
-            artist.Country, m => m.MapFrom(i => new Country { CountryName = i.Country })); 
+            artist.Country, m => m.MapFrom(i => new Country { CountryName = i.Country }));
             // Release
-            CreateMap<Release, CreateReleasDto>().ForMember(releasDto =>
+            CreateMap<Release, ReleaseDto>().ForMember(releasDto =>
             releasDto.Country, m => m.MapFrom(a => a.Country.CountryName));
 
-            CreateMap<CreateReleasDto, Release>()
+            CreateMap<ReleaseDto, Release>()
             .ForMember(release => release.Country, m => m.MapFrom(i => new Country
             {
-                    CountryName = i.Country 
-            }))  
+                CountryName = i.Country
+            }))
             .ForMember(release => release.Condition, m => m.MapFrom(i => new Condition
             {
-                    ConditionName = i.Condition
-            }))
-            .ForMember(release=> release.Artist, m => m.MapFrom(i => new Artist()
-            {
-                ArtistName = i.Artist.ArtistName,
-                Country = new Country { CountryName = i.Artist.Country },
-                RealName = i.Artist.RealName,   
+                ConditionName = i.Condition
             }));
+
+            CreateMap<Release, CreateReleasDto>()
+           .ForMember(release => release.Genre, m => m.MapFrom(i => i.ReleaseGenre.Select(x => x.Genre.GenreName).ToList()))
+           .ForMember(release => release.Style, m => m.MapFrom(i => i.ReleaseStyle.Select(x => x.Style.StyleName).ToList()))
+           .ForMember(release => release.Country, m => m.MapFrom(i => i.Country.CountryName))
+           .ForMember(release => release.Condition, m => m.MapFrom(i => i.Condition.ConditionName))
+           .ForMember(release => release.Artist, m => m.MapFrom(i => new CreateArtistDto(i.Artist.ArtistName, i.Artist.RealName, i.Artist.Country.CountryName)));
+
         }
 
     }

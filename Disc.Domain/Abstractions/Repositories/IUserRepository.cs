@@ -1,6 +1,6 @@
 ﻿using Disc.Domain.Entities;
 
-namespace Disc.Domain.Repositories
+namespace Disc.Domain.Abstractions.Repositories
 {
     public interface IUserRepository : IGenericRepository<User>
     {

@@ -1,8 +1,5 @@
 using Application;
-using Disc.Domain.Repositories;
 using Disc.Infrastructure;
-using Disc.Infrastructure.Database.Repositories;
-using Infrastructure.Database;
 using Newtonsoft.Json;
 using Presentation;
 using Serilog;

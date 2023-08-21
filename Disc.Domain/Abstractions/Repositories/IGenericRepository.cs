@@ -1,4 +1,4 @@
-﻿namespace Disc.Domain.Repositories
+﻿namespace Disc.Domain.Abstractions.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {

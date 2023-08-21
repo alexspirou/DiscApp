@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Disc.Application.DTOs.Style;
 using Disc.Application.Requests.StyleOperations.Commands.CreateStyle;
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
-using Disc.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +28,7 @@ namespace Disc.WebApi.Controllers
         [HttpPost, Route("CreateStyles/{newStyles}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateStyles([FromBody] CreateStyleDto[] newStyles)
+        public async Task<IActionResult> CreateStyles([FromBody] StyleDto[] newStyles)
         {
             var result = new List<Style>();
             foreach (var newStyle in newStyles)

@@ -1,6 +1,6 @@
 ﻿using Disc.Domain.Entities;
 
-namespace Disc.Domain.Repositories
+namespace Disc.Domain.Abstractions.Repositories
 {
     public interface IGenreRepository : IGenericRepository<Genre>
     {
@@ -10,5 +10,6 @@ namespace Disc.Domain.Repositories
         public Genre GetGenreById(uint id);
         public Task<Genre> GetGenreByIdAsync(uint id);
         public Task<Genre> GetGenreByNameAsync(string name);
+        public Task<uint> GetGenreIdByName(string name);
     }
 }

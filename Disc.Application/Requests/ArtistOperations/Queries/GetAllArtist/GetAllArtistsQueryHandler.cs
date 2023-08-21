@@ -1,12 +1,12 @@
-﻿using Disc.Domain.Entities;
-using Disc.Domain.Repositories;
+﻿using Disc.Domain.Abstractions.Repositories;
+using Disc.Domain.Entities;
 using MediatR;
 
 namespace Disc.Application.Requests.ArtistsOperations.Queries.GetAllArtist
 {
     internal class GetAllArtistsQueryHandler : IRequestHandler<GetAllArtistsQuery, List<Artist>>
     {
-        IArtistRepository _artistRepository;
+        private readonly IArtistRepository _artistRepository;
         public GetAllArtistsQueryHandler(IArtistRepository artistRepository)
         {
             _artistRepository = artistRepository;

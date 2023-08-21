@@ -20,7 +20,7 @@ namespace Disc.WebApi.Controllers
         [HttpPost, Route("CreateGenres/{newGenres}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateConditions([FromBody] CreateGenreDto[] newGenres)
+        public async Task<IActionResult> CreateConditions([FromBody] GenreDto[] newGenres)
         {
             var result = new List<Genre>();
             foreach (var newGenre in newGenres)

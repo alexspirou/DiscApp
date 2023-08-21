@@ -1,4 +1,4 @@
-﻿using Disc.Domain.Repositories;
+﻿using Disc.Domain.Abstractions.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
