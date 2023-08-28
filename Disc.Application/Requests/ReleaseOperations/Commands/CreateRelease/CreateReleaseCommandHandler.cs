@@ -1,18 +1,20 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
 using Disc.Domain.Exceptions;
+using Disc.Domain.Exceptions.ConditionExceptions;
+using Disc.Domain.Exceptions.CountryExceptions;
 using MediatR;
 
 namespace Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease
 {
     public class CreateReleaseCommandHandler : IRequestHandler<CreateReleaseCommand, Release>
     {
-        private readonly IReleaseRepository _releaseRepository;
-        private readonly IArtistRepository _artistRepository;
-        private readonly ICountryRepository _countryRepository;
-        private readonly IStyleRepository _styleRepository;
-        private readonly IConditionRepository _conditionRepository;
-        private readonly IGenreRepository _genreRepository;
+        IReleaseRepository _releaseRepository;
+        IArtistRepository _artistRepository;
+        ICountryRepository _countryRepository;
+        IStyleRepository _styleRepository;
+        IConditionRepository _conditionRepository;
+        IGenreRepository _genreRepository;
         public CreateReleaseCommandHandler(IReleaseRepository releaseRepository, IArtistRepository artistRepository,
             ICountryRepository countryRepository, IStyleRepository styleRepository, 
             IConditionRepository conditionRepository, IGenreRepository genreRepository)
@@ -29,22 +31,33 @@ namespace Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease
             var artist = await ValidateOrCreateArtist(request);
             var release = await ValidateOrCreateRelease(request, artist);
             // Assign Genre to release
-            if (request.Genres.Any(genre => genre is null))
+            foreach(var requestGenre in request.Genres)
             {
-                throw new NullReferenceException("Genre is null");
+                var genre = _genreRepository.GetGenreByNameAsync(requestGenre.GenreName);
+                if (genre is null)
+                {
+                    throw new NullReferenceException($"{requestGenre.GenreName} : 'Genre' is not valid.");
+                }
+            }   
+            foreach(var requestStyle in request.Styles)
+            {
+                var style = await _styleRepository.GetStyleByNameAsync(requestStyle.StyleName);
+                if (style is null)
+                {
+                    throw new NullReferenceException($"{requestStyle.StyleName} : 'Style' is valid.");
+                }
             }
-            release.ReleaseGenre = await _releaseRepository.CreateReleaseGenreAsync(release, request.Genres);
 
-            if (request.Styles.Any(style => style is null))
-            {
-                throw new NullReferenceException("Style is null");
-            }
+
+            release.ReleaseGenre = await _releaseRepository.CreateReleaseGenreAsync(release, request.Genres);
             release.ReleaseStyle = await _releaseRepository.CreateReleaseStyleAsync(release, request.Styles); ;
+
+
 
             return release;
         }
 
-        private async Task<Release> ValidateOrCreateRelease(CreateReleaseCommand request, Artist artist)
+        private async Task<Release?> ValidateOrCreateRelease(CreateReleaseCommand request, Artist artist)
         {
             var release = await _releaseRepository.GetReleaseByDiscogIdAsync(request.Release.DiscogsId);
             if (release is null)
@@ -66,7 +79,7 @@ namespace Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease
             return release;
         }
 
-        private async Task<Artist> ValidateOrCreateArtist(CreateReleaseCommand request)
+        private async Task<Artist?> ValidateOrCreateArtist(CreateReleaseCommand request)
         {
             var artist = await _artistRepository.GetArtistByNameAsync(request.Artist.ArtistName);
             if (artist is null)

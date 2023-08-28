@@ -24,7 +24,7 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
 
     protected virtual DbSet<T> Entities
     {
-        get { return _entities ?? (_entities = Context.Set<T>()); }
+        get { return _entities ?? (_entities = Context.Set<T>() ); }
     }
 
     public void Dispose()
@@ -111,10 +111,6 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
         {
             throw new ArgumentNullException("Entity");
         }
-        if (Context is null || _isDisposed)
-        {
-            Context = new DiscAppContext();
-        }
 
         Context.Entry(entity).State = EntityState.Modified;
         Save();
@@ -125,10 +121,7 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
         {
             throw new ArgumentNullException("Entity");
         }
-        if (Context is null || _isDisposed)
-        {
-            Context = new DiscAppContext();
-        }
+
 
         Context.Entry(entity).State = EntityState.Modified;
         await SaveAsync();
@@ -141,10 +134,6 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
             if (entity is null)
             {
                 throw new ArgumentNullException("Entity");
-            }
-            if (Context is null || _isDisposed)
-            {
-                Context = new DiscAppContext();
             }
 
             Entities.Remove(entity);
@@ -163,10 +152,6 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
             if (entity is null)
             {
                 throw new ArgumentNullException("Entity");
-            }
-            if (Context is null || _isDisposed)
-            {
-                Context = new DiscAppContext();
             }
 
             Entities.Remove(entity);

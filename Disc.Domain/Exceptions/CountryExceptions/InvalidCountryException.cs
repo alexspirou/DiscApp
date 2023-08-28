@@ -1,4 +1,4 @@
-﻿namespace Disc.Domain.Exceptions
+﻿namespace Disc.Domain.Exceptions.CountryExceptions
 {
     public class InvalidCountryException : Exception
     {

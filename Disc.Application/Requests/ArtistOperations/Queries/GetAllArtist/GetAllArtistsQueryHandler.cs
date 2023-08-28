@@ -13,9 +13,10 @@ namespace Disc.Application.Requests.ArtistsOperations.Queries.GetAllArtist
         }
         public async Task<List<Artist>> Handle(GetAllArtistsQuery request, CancellationToken cancellationToken)
         {
-            var artist = _artistRepository.GetAllArtists();
+            //var artist = await _artistRepository.GetAllArtistsAsync();
 
-            return artist;
+            //return artist;
+            throw new NotImplementedException();
         }
     }
 }

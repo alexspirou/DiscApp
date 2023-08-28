@@ -1,8 +1,8 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
+using Disc.Domain.Exceptions.ConditionExceptions;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 
 namespace Disc.Infrastructure.Database.Repositories;
 public class ConditioRepository : GenericRepository<Condition>, IConditionRepository
@@ -23,7 +23,7 @@ public class ConditioRepository : GenericRepository<Condition>, IConditionReposi
         }
         catch(Exception ex)
         {
-            throw new Exception("Condtion exceptions", ex);
+            throw new CondtionDbCreationException($"Failed to create Condition: {newConditon.ToString()}", ex);
         }
 
     }
@@ -37,7 +37,7 @@ public class ConditioRepository : GenericRepository<Condition>, IConditionReposi
         }
         catch (Exception ex)
         {
-            throw new Exception("Condtion exceptions", ex);
+            throw new CondtionDbCreationException($"Failed to get Condtion with id: {id}", ex);
         }
     }
 
@@ -50,23 +50,10 @@ public class ConditioRepository : GenericRepository<Condition>, IConditionReposi
         }
         catch(Exception ex)
         {
-            throw new Exception("Condtion exceptions", ex);
+            throw new CondtionDbCreationException($"Failed to get Condtion with name: {conditionName}", ex);
         }
     }
 
-    public string GetConditionNameById(uint id)
-    {
-        try
-        {
-            var conditionName = GetConditionNameByIdAsync(id).Result;
-            return conditionName;
-        }
-        catch(Exception ex)
-        {
-            throw new Exception("Condtion exceptions", ex);
-        }
-
-    }
     public async Task<string> GetConditionNameByIdAsync(uint id)
     {
         try
@@ -76,7 +63,7 @@ public class ConditioRepository : GenericRepository<Condition>, IConditionReposi
         }
         catch(Exception ex)
         {
-            throw new Exception("Condtion exceptions", ex);
+            throw new CondtionDbCreationException($"Failed to get Condtion with id: {id}", ex);
         }
 
     }

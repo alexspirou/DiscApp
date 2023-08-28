@@ -1,5 +1,7 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
+using Disc.Domain.Exceptions.ArtistExceptions;
+using Disc.Domain.Exceptions.CountryExceptions;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -12,41 +14,48 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     {
 
     }
-
-    public string GetCountryNameById(uint id)
+    public async Task<Country> CreateCountryAsync(Country country)
     {
-        var result = GetCountryNameByIdAsync(id).Result;
-        return result;
-    } 
+        try
+        {
+            await InsertAsync(country);
+            return country;
+        }
+        catch (Exception ex)
+        {
+            throw new CountryDbCreationException($"Failed to create country : {country.CountryName}", ex);
+        }
+    }
+
     public async Task<string> GetCountryNameByIdAsync(uint id)
     {
-        var conditionName = await Context.Country.Where(c => c.CountryId == id).Select(c => c.CountryName).FirstOrDefaultAsync();
-        return conditionName;
-    }
+        try
+        {
+            var conditionName = await Context.Country.Where(c => c.CountryId == id).Select(c => c.CountryName).FirstOrDefaultAsync();
+            return conditionName;
+        }
+        catch (Exception ex)
+        {
 
-    public IEnumerable GetReleasesByCountryId(uint id)
-    {
-        var releases = Context.Country.Include(c => c.Release).Where(c => c.CountryId == id).Select(c => c.Release).FirstOrDefault();
-        return releases;
-    }
+            throw new CountryDbAccessException($"Failed to get Country with id {id}", ex);
+        }
 
-    public IEnumerable GetArtistsByCountryId(uint id)
-    {
-        var releases = GetArtistsByCountryIdAsync(id).Result;
-        return releases;
     }
 
     public async Task<IEnumerable> GetArtistsByCountryIdAsync(uint id)
     {
-        var releases = await Context.Country.Include(c => c.Artists).Where(c => c.CountryId == id).Select(c => c.Artists).FirstOrDefaultAsync();
-        return releases;
-    } // TODO : Move to artist repo
+        try
+        {
+            var releases = await Context.Country.Include(c => c.Artists).Where(c => c.CountryId == id).Select(c => c.Artists).FirstOrDefaultAsync();
+            return releases;
+        }
+        catch (Exception ex)
+        {
 
-    public Country GetCountryByName(string name)
-    {
-        var result = GetCountryByNameAsync(name).Result;
-        return result;
-    }
+            throw new ArtistDbAccessException($"Failed to get Artists from CountruId{id}", ex);
+        }
+
+    } 
 
     public async Task<Country> GetCountryByNameAsync(string name)
     {
@@ -57,29 +66,8 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         }
         catch (Exception ex)
         {
-            throw new Exception("Country exception", ex);
+            throw new CountryDbAccessException($"Failed to get country: {name} ", ex);
         }
     }
-
-    public Country CreateCountry(string countryName)
-    {
-        return CreateCountryAsync(countryName).Result;
-    }
-
-    public async Task<Country> CreateCountryAsync(string countryName)
-    {
-        var country = GetCountryByName(countryName);
-
-        if (country == null)
-        {
-            country = new Country()
-            {
-                CountryName = countryName
-            };
-            await InsertAsync(country);
-        }
-        return country;
-    }
-
 
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Disc.Domain.Exceptions
+namespace Disc.Domain.Exceptions.ConditionExceptions
 {
     public class InvalidConditionException : Exception
     {
@@ -14,12 +14,12 @@ namespace Disc.Domain.Exceptions
         }
 
         public InvalidConditionException(string condition, string message)
-            : base($"Invalid country: {condition}. {message}")
+            : base($"Invalid condition: {condition}. {message}")
         {
         }
 
         public InvalidConditionException(string condition, string message, Exception innerException)
-            : base($"Invalid country: {condition}. {message}", innerException)
+            : base($"Invalid condition: {condition}. {message}", innerException)
         {
         }
     }

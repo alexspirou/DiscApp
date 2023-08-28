@@ -5,15 +5,14 @@ namespace Disc.Domain.Abstractions.Repositories
 {
     public interface IArtistRepository : IGenericRepository<Artist>
     {
-        Artist CreateArtist(Artist newArtist);
-        Task<Artist> CreateArtistAsync(Artist newArtist);
-        string GetNameByArtistID(uint id);
-        string GetRealNameByArtistId(uint id);
-        IEnumerable GetLinksByArtistID(uint id);
-        IEnumerable GetMusicLabelByArtistID(uint id);
-        IEnumerable GetReleaseByArtistID(uint id);
-        Task<Artist> GetArtistByNameAsync(string name);
-        List<Artist> GetAllArtists();
+        Task<Artist?> CreateArtistAsync(Artist newArtist);
+        Task<string?> GetNameByArtistIdAsync(uint id);
+        Task<string?> GetRealNameByArtistIdAsync(uint id);
+        Task<IEnumerable> GetLinksByArtistIDAsync(uint id);
+        Task<IEnumerable> GetMusicLabelByArtistIDAsync(uint id);
+        Task<IEnumerable> GetReleaseByArtistIDAsync(uint id);
+        Task<Artist?> GetArtistByNameAsync(string name);
+        Task<IEnumerable<Artist>> GetAllArtistsAsync();
 
     }
 }

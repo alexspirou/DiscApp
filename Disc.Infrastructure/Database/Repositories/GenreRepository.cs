@@ -1,6 +1,8 @@
 ﻿
 using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
+using Disc.Domain.Exceptions.CountryExceptions;
+using Disc.Domain.Exceptions.GenreExceptions;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,18 +14,7 @@ namespace Disc.Infrastructure.Database.Repositories
         {
 
         }
-        public async Task<uint> GetGenreIdByName(string name)
-        {
-            try
-            {
-                var result = await Context.Genre.Where(genre => genre.GenreName == name).Select(x=>x.GenreId).FirstAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Genre exception", ex);
-            }
-        }
+
         public async Task<Genre> CreateGenreAsync(Genre newGenre)
         {
             try
@@ -34,7 +25,7 @@ namespace Disc.Infrastructure.Database.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Genre exceptions", ex);
+                throw new CountryDbCreationException($"Faied to create Genre: {newGenre.ToString()}", ex);
             }
         }
 
@@ -47,13 +38,8 @@ namespace Disc.Infrastructure.Database.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Artist exception", ex);
+                throw new GenreDbAccessException($"Failed to get genre id with name {name}", ex);
             }
-        }
-        public string GetGenreNameById(uint id)
-        {
-            var result = GetGenreNameByIdAsync(id).Result;
-            return result;
         }
 
         public async Task<string> GetGenreNameByIdAsync(uint id)
@@ -65,23 +51,23 @@ namespace Disc.Infrastructure.Database.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Artist exception", ex);
+                throw new GenreDbAccessException($"Failed to get Genre name with id {id}", ex);
             }
-        }
-
-
-        public Genre GetGenreById(uint id)
-        {
-            var result = GetGenreByIdAsync(id).Result;
-            return result;
         }
 
         public async Task<Genre> GetGenreByIdAsync(uint id)
         {
-            var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).FirstOrDefaultAsync();
-            return result;
-        }
+            try
+            {
+                var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
 
+                throw new GenreDbAccessException($"Failed to get Genre with id {id}", ex);
+            }
+        }
  
     }
 }

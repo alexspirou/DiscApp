@@ -17,21 +17,11 @@ namespace Infrastructure.Database
         public DbSet<User> User { get; set; } = null!;
         public DbSet<ReleaseStyle> ReleaseStyle { get; set; } = null!;
 
-        public DiscAppContext()
+        public DiscAppContext(DbContextOptions<DiscAppContext> options) : base(options)
         {
                 
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
 
-            var connectionsString = "Data Source=DESKTOP-8KR908D\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-            optionsBuilder.UseSqlServer(connectionsString, builder =>
-            {
-                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-            });
-
-            base.OnConfiguring(optionsBuilder);
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

@@ -23,15 +23,6 @@ namespace Disc.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Route("CreateReleaseDummy/{release}")]
-        public async Task<IActionResult> CreateReleaseDummy([FromQuery] uint artistId, [FromQuery] uint countryId, [FromQuery] uint conditionId, Release release)
-        {
-            //var command = new CreateReleaseCommand(release);
-            //var result = await _mediator.Send(command);
-
-            return Ok();
-        }
-
         [HttpPost, Route("CreateRelases/{newReleases}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -40,6 +31,10 @@ namespace Disc.WebApi.Controllers
             var result = new List<CreateReleasDto>();
             foreach (var newRelease in newReleases)
             {
+                if (newRelease is null)
+                {
+                    continue;
+                }
                 var release = new Release()
                 {
                     Condition = new Condition { ConditionName = newRelease.Condition },
@@ -57,6 +52,7 @@ namespace Disc.WebApi.Controllers
                 result.Add(_mapper.Map<CreateReleasDto>(createNewRelease));
             }
 
+
             return Ok(result);
         }
         [HttpPost, Route("CreateRelase/newReleases")]
@@ -64,11 +60,10 @@ namespace Disc.WebApi.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> CreateRelease(CreateReleasDto newRelease)
         {
-
             var release = new Release()
             {
                 Condition = new Condition { ConditionName = newRelease.Condition },
-                Title = newRelease.Title,
+                Title = newRelease.Title ,
                 ReleaseYear = newRelease.ReleaseYear,
                 Country = new Country { CountryName = newRelease.Country }
             };
@@ -78,7 +73,6 @@ namespace Disc.WebApi.Controllers
                  newRelease.Style.Select(genre => new Genre { GenreName = genre }).ToArray(),
                 newRelease.Genre.Select(style => new Style { StyleName = style }).ToArray());
             var createNewRelease = await _mediator.Send(command);
-
 
             return Ok(_mapper.Map<CreateReleasDto>(createNewRelease));
         }

@@ -17,7 +17,7 @@ namespace Disc.Application.Requests.CountryOperations.Commands.CreateCountry
 
             if(country is null)
             {
-                country = await _countryRepository.CreateCountryAsync(request.Country.CountryName);
+                country = await _countryRepository.CreateCountryAsync(request.Country);
             }
 
             return country;

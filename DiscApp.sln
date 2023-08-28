@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.Presentation", "Disc.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.WebApi", "Disc.WebApi\Disc.WebApi.csproj", "{34A74B56-8697-433B-8194-CD0E9F42F8E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disc.Tests", "Disc.Tests\Disc.Tests.csproj", "{D34FCFDB-6963-4D84-B064-B0EABF3151C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{34A74B56-8697-433B-8194-CD0E9F42F8E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A74B56-8697-433B-8194-CD0E9F42F8E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34A74B56-8697-433B-8194-CD0E9F42F8E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34FCFDB-6963-4D84-B064-B0EABF3151C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34FCFDB-6963-4D84-B064-B0EABF3151C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34FCFDB-6963-4D84-B064-B0EABF3151C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34FCFDB-6963-4D84-B064-B0EABF3151C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
