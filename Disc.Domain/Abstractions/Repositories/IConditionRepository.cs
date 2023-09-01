@@ -6,10 +6,10 @@ namespace Disc.Domain.Abstractions.Repositories
     public interface IConditionRepository : IGenericRepository<Condition>
     {
         Task<Condition> CreateConditonAsync(Condition newConditon);
-        Task<string> GetConditionNameByIdAsync(uint id);
+        Task<string?> GetConditionNameByIdAsync(uint id);
 
-        Task<Condition> GetConditionByNameAsync(string conditionName);
-        Task<Condition> GetConditionByIdAsync(uint id);
+        Task<Condition?> GetConditionByNameAsync(string conditionName);
+        Task<Condition?> GetConditionByIdAsync(uint id);
     }
 }
 

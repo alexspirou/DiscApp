@@ -16,17 +16,9 @@ namespace Disc.Infrastructure.Database.Repositories
             return Context.User.Where(usr => usr.UserId == id).Select(usr => usr.Username).ToString();
         }
 
-        public IEnumerable<User> GetUserById(uint id)
+        public IEnumerable<User?> GetUserById(uint id)
         {
-            try
-            {
-                return Context.User.Where(usr => usr.UserId == (int)id).ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
+            return Context.User.Where(usr => usr.UserId == (int)id).ToList();
         }
     }
 }

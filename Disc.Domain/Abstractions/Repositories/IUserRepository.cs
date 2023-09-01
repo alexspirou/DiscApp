@@ -4,7 +4,7 @@ namespace Disc.Domain.Abstractions.Repositories
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        IEnumerable<User> GetUserById(uint id);
+        IEnumerable<User?> GetUserById(uint id);
         string GetNameByUserID(uint id);
     }
 }

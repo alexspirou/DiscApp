@@ -8,11 +8,11 @@ namespace Disc.Domain.Abstractions.Repositories
         Task<Artist?> CreateArtistAsync(Artist newArtist);
         Task<string?> GetNameByArtistIdAsync(uint id);
         Task<string?> GetRealNameByArtistIdAsync(uint id);
-        Task<IEnumerable> GetLinksByArtistIDAsync(uint id);
-        Task<IEnumerable> GetMusicLabelByArtistIDAsync(uint id);
-        Task<IEnumerable> GetReleaseByArtistIDAsync(uint id);
+        Task<IEnumerable<Link?>> GetLinksByArtistIDAsync(uint id);
+        Task<IEnumerable<MusicLabel?>> GetMusicLabelByArtistIDAsync(uint id);
+        Task<IEnumerable<Release?>> GetReleaseByArtistIDAsync(uint id);
         Task<Artist?> GetArtistByNameAsync(string name);
-        Task<IEnumerable<Artist>> GetAllArtistsAsync();
+        Task<IEnumerable> GetAllArtistsAsync();
 
     }
 }

@@ -15,57 +15,28 @@ public class ConditioRepository : GenericRepository<Condition>, IConditionReposi
 
     public async Task<Condition> CreateConditonAsync(Condition newConditon)
     {
-        try
-        {
-            Context.Condition.Add(newConditon);
-            await SaveAsync();
-            return newConditon;
-        }
-        catch(Exception ex)
-        {
-            throw new CondtionDbCreationException($"Failed to create Condition: {newConditon.ToString()}", ex);
-        }
-
+        Context.Condition.Add(newConditon);
+        await SaveAsync();
+        return newConditon;
     }
 
-    public async Task<Condition> GetConditionByIdAsync(uint id)
+    public async Task<Condition?> GetConditionByIdAsync(uint id)
     {
-        try
-        {
-            var result = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c).FirstOrDefaultAsync();
-            return result;
-        }
-        catch (Exception ex)
-        {
-            throw new CondtionDbCreationException($"Failed to get Condtion with id: {id}", ex);
-        }
+
+        var result = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c).FirstOrDefaultAsync();
+        return result;
     }
 
-    public async Task<Condition> GetConditionByNameAsync(string conditionName)
+    public async Task<Condition?> GetConditionByNameAsync(string conditionName)
     {
-        try
-        {
-            var result = await Context.Condition.Where(c => c.ConditionName == conditionName).Select(c => c).FirstOrDefaultAsync();
-            return result;
-        }
-        catch(Exception ex)
-        {
-            throw new CondtionDbCreationException($"Failed to get Condtion with name: {conditionName}", ex);
-        }
+        var result = await Context.Condition.Where(c => c.ConditionName == conditionName).Select(c => c).FirstOrDefaultAsync();
+        return result;
     }
 
-    public async Task<string> GetConditionNameByIdAsync(uint id)
+    public async Task<string?> GetConditionNameByIdAsync(uint id)
     {
-        try
-        {
-            var conditionName = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c.ConditionName).FirstOrDefaultAsync();
-            return conditionName;
-        }
-        catch(Exception ex)
-        {
-            throw new CondtionDbCreationException($"Failed to get Condtion with id: {id}", ex);
-        }
-
+        var conditionName = await Context.Condition.Where(c => c.ConditionId == id).Select(c => c.ConditionName).FirstOrDefaultAsync();
+        return conditionName;
     }
 
 

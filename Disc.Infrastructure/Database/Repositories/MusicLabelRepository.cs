@@ -1,6 +1,8 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
 using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace Disc.Infrastructure.Database.Repositories;
 
@@ -12,64 +14,34 @@ public class MusicLabelRepository : GenericRepository<MusicLabel>, ILabelReposit
 
     }
 
-    public string GetCountryById(uint id)
+    public async Task<MusicLabel> CreateMusicLabelAsync(MusicLabel newLabel)
     {
-        try
-        {
-            return Context.Label.Where(label => label.LabelId == id).Select(label => label.Country).ToString();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("MusicLabel exception", ex);
-        }
+        Context.Label.Add(newLabel);
+        await SaveAsync();
+        return newLabel;
+    }
+    public async Task<Country?> GetCountryByIdAsync(uint id)
+    {
+        var result = await Context.Label.Where(label => label.LabelId == id).Select(label => label.Country).SingleOrDefaultAsync();
+        return result;
     }
 
-    public IEnumerable<Link> GetLinksById(uint id)
+    public async Task<IEnumerable<Link>> GetLinksByIdAsync(uint id)
     {
-        try
-        {
-            return (IEnumerable<Link>)Context.Label.Where(label => label.LabelId == id).Select(label => label.Links);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("MusicLabel exception", ex);
-        }
+        var result = await Context.Label.Where(label => label.LabelId == id).SelectMany(label => label.Links).ToListAsync();
+        return result;
     }
 
-    public string MusicLabelNameById(uint id)
+    public async Task<string?> GetMusicLabelNameByIdAsync(uint id)
     {
-        try
-        {
-            return Context.Label.Where(label => label.LabelId == id).Select(label => label.LabelName).ToString();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("MusicLabel exception", ex);
-        }
+        var result = await Context.Label.Where(label => label.LabelId == id).Select(label => label.LabelName).SingleOrDefaultAsync();
+        return result;
     }
 
-    public MusicLabel GetMusicLabelByName(string name)
+    public async Task<MusicLabel?> GetMusicLabelByNameAsync(string name)
     {
-        try
-        {
-            return Context.Label.Where(label => label.LabelName == name).SingleOrDefault();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("MusicLabel exception", ex);
-        }
+        var result = await Context.Label.Where(label => label.LabelName == name).SingleOrDefaultAsync();
+        return result;
     }
 
-    public MusicLabel CreateMusicLabel(string labelName, Country country, IEnumerable<Link> links = null, IEnumerable<ArtistMusicLabel> artist = null)
-    {
-        var musicLabel = GetMusicLabelByName(labelName);
-
-        if (musicLabel == null)
-        {
-            musicLabel = new MusicLabel { LabelName = labelName, Country = country, Artist = artist, Links = links };
-            Insert(musicLabel);
-        }
-
-        return musicLabel;
-    }
 }

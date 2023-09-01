@@ -8,9 +8,9 @@ namespace Disc.Domain.Abstractions.Repositories
         Task<Country> CreateCountryAsync(Country countryName);
         Task<Country> GetCountryByNameAsync(string name);
 
-        Task<string> GetCountryNameByIdAsync(uint id);
+        Task<string?> GetCountryNameByIdAsync(uint id);
 
-        Task<IEnumerable> GetArtistsByCountryIdAsync(uint id);
+        Task<IEnumerable<Artist>> GetArtistsByCountryIdAsync(uint id);
 
     }
 }

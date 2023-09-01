@@ -17,57 +17,29 @@ namespace Disc.Infrastructure.Database.Repositories
 
         public async Task<Genre> CreateGenreAsync(Genre newGenre)
         {
-            try
-            {
-                Context.Genre.Add(newGenre);
-                await SaveAsync();
-                return newGenre;
-            }
-            catch (Exception ex)
-            {
-                throw new CountryDbCreationException($"Faied to create Genre: {newGenre.ToString()}", ex);
-            }
+
+            Context.Genre.Add(newGenre);
+            await SaveAsync();
+            return newGenre;
         }
 
-        public async Task<Genre> GetGenreByNameAsync(string name)
+        public async Task<Genre?> GetGenreByNameAsync(string name)
         {
-            try
-            {
-                var result = await Context.Genre.Where(genre => genre.GenreName == name).FirstOrDefaultAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new GenreDbAccessException($"Failed to get genre id with name {name}", ex);
-            }
+            var result = await Context.Genre.Where(genre => genre.GenreName == name).SingleOrDefaultAsync();
+            return result;
         }
 
-        public async Task<string> GetGenreNameByIdAsync(uint id)
+        public async Task<string?> GetGenreNameByIdAsync(uint id)
         {
-            try
-            {
-                var result = await Context.Genre.Where(genre => genre.GenreId == id).Select(genre => genre.GenreName).FirstOrDefaultAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new GenreDbAccessException($"Failed to get Genre name with id {id}", ex);
-            }
+            var result = await Context.Genre.Where(genre => genre.GenreId == id).Select(genre => genre.GenreName).SingleOrDefaultAsync();
+            return result;
         }
 
-        public async Task<Genre> GetGenreByIdAsync(uint id)
+        public async Task<Genre?> GetGenreByIdAsync(uint id)
         {
-            try
-            {
-                var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).FirstOrDefaultAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-
-                throw new GenreDbAccessException($"Failed to get Genre with id {id}", ex);
-            }
+            var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).SingleOrDefaultAsync();
+            return result;
         }
- 
+
     }
 }

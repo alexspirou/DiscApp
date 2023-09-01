@@ -31,20 +31,23 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
         var result = await Context.Artist.AsNoTracking().Where(a => a.ArtistId == id).Select(a => a.RealName).FirstOrDefaultAsync();
         return result;
     }
-    public async Task<IEnumerable> GetLinksByArtistIDAsync(uint id)
+    public async Task<IEnumerable<Link?>> GetLinksByArtistIDAsync(uint id)
     {
-        var result = await Context.Artist.AsNoTracking().Include(a => a.Links).Where(a => a.ArtistId == id).Select(a => a.Links).ToListAsync();
+        var result = await Context.Artist.AsNoTracking().Include(a => a.Links).Where(a => a.ArtistId == id).SelectMany(a => a.Links).Select(l => l.Link).ToListAsync();
         return result;
     }
-    public async Task<IEnumerable> GetMusicLabelByArtistIDAsync(uint id)
+    public async Task<IEnumerable<MusicLabel?>> GetMusicLabelByArtistIDAsync(uint id)
     {
-        var result = await Context.Artist.AsNoTracking().Include(a => a.MusicLabel).Where(a => a.ArtistId == id).Select(a => a.MusicLabel).ToListAsync();
+        var result = await Context.Artist.AsNoTracking().Include(a => a.MusicLabel).Where(a => a.ArtistId == id).SelectMany(a => a.MusicLabel).Select(m => m.MusicLabel).ToListAsync();
         return result;
     }
 
-    public async Task<IEnumerable> GetReleaseByArtistIDAsync(uint id)
+    public async Task<IEnumerable<Release?>> GetReleaseByArtistIDAsync(uint id)
     {
-        var result = await Context.Artist.AsNoTracking().Include(a => a.Release).Where(a => a.ArtistId == id).Select(a => a.Release).ToListAsync();
+        var result = await Context.Artist.AsNoTracking()
+            .Include(a => a.Release)
+            .Include(r => r.Release).ThenInclude(a => a.Artist)
+            .Where(a => a.ArtistId == id).SelectMany(a => a.Release).ToListAsync();
         return result;
     }
 
@@ -62,7 +65,7 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
         return result;
     }
 
-    public async Task<IEnumerable<Artist>> GetAllArtistsAsync()
+    public async Task<IEnumerable> GetAllArtistsAsync()
     {
 
         var test = Context.Artist

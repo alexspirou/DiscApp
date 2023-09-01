@@ -79,26 +79,40 @@ namespace Disc.Tests.InfrastructureTests.DatabaseTests
         }       
         
         [Fact]
-        public async Task GetArtistByNameAsync_LastEntry_ShouldBe_Equal_With_Expected()
+        public async Task GetArtistByNameAsync_ShouldBe_Equal_With_Expected()
         {
             //  Arrange
             var dbContext = await GetDbContext();
             var artistRepository = new ArtistRepository(dbContext);
             uint id = 1;
             // Act
-            var createdArtist = await artistRepository.GetArtistByNameAsync($"ArtistName{1}");
+            var createdArtist = await artistRepository.GetArtistByNameAsync($"ArtistName{id}");
             //Assert
-            createdArtist.ArtistName.Should().BeEquivalentTo($"ArtistName{1}");
+            createdArtist.ArtistName.Should().BeEquivalentTo($"ArtistName{id}");
             createdArtist.ArtistId.Should().Be(id);
-            createdArtist.RealName.Should().BeEquivalentTo($"RealName{1}");
-            createdArtist.Country?.CountryName.Should().BeEquivalentTo($"ArtistCountryName{1}");
-            createdArtist.Links?.First().Link.SiteUrl.Should().BeEquivalentTo($"www.Link{1}.com");
-            createdArtist.Release?.First().Title.Should().BeEquivalentTo($"Title{1}");
+            createdArtist.RealName.Should().BeEquivalentTo($"RealName{id}");
+            createdArtist.Country?.CountryName.Should().BeEquivalentTo($"ArtistCountryName{id}");
+            createdArtist.Links?.First().Link.SiteUrl.Should().BeEquivalentTo($"www.Link{id}.com");
+            createdArtist.Release?.First().Title.Should().BeEquivalentTo($"Title{id}");
             createdArtist.Release?.First().ReleaseYear.Should().Be(1991);
-            createdArtist.Release?.First()?.ReleaseGenre?.First().Genre.GenreName.Should().BeEquivalentTo($"GenreName{1}");
-            createdArtist.Release?.First()?.ReleaseStyle?.First().Style.StyleName.Should().BeEquivalentTo($"StyleName{1}");
-            createdArtist.Release?.First()?.Condition?.ConditionName.Should().BeEquivalentTo($"ConditionName{1}");
-            createdArtist.Release?.First()?.Condition?.Description.Should().BeEquivalentTo($"Description{1}");
+            createdArtist.Release?.First()?.ReleaseGenre?.First().Genre.GenreName.Should().BeEquivalentTo($"GenreName{id}");
+            createdArtist.Release?.First()?.ReleaseStyle?.First().Style.StyleName.Should().BeEquivalentTo($"StyleName{id}");
+            createdArtist.Release?.First()?.Condition?.ConditionName.Should().BeEquivalentTo($"ConditionName{id}");
+            createdArtist.Release?.First()?.Condition?.Description.Should().BeEquivalentTo($"Description{id}");
+        } 
+        
+        
+        [Fact]
+        public async Task GetReleaseByArtistIDAsync_ShouldBe_Equal_With_Expected()
+        {
+            //  Arrange
+            var dbContext = await GetDbContext();
+            var artistRepository = new ArtistRepository(dbContext);
+            uint id = 1;
+            // Act
+            var createdArtist = await artistRepository.GetReleaseByArtistIDAsync(id);
+            //Assert
+
         }
 
 

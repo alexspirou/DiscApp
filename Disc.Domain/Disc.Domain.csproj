@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="Exceptions\LinkExceptions\" />
+    <Folder Include="Exceptions\MusicLabelExceptions\" />
+    <Folder Include="Exceptions\StyleExceptions\" />
+    <Folder Include="Exceptions\UserExceptions\" />
   </ItemGroup>
 
 </Project>

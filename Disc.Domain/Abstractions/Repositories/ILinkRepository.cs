@@ -2,7 +2,7 @@
 {
     public interface ILinkRepository
     {
-        public string GetUrlById(uint id);
+        public Task<string?> GetUrlByIdAsync(uint id);
     }
 }
 

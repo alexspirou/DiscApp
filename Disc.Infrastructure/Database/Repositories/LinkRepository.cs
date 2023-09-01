@@ -1,21 +1,14 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Disc.Infrastructure.Database.Repositories;
 
 public class LinkRepository : GenericRepository<Link>, ILinkRepository
 {
-    public string GetUrlById(uint id)
+    public async Task<string?> GetUrlByIdAsync(uint id)
     {
-        {
-            try
-            {
-                return Context.Link.Where(link => link.LinkId == id).Select(link => link.SiteUrl).ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Link exception", ex);
-            }
-        }
+        var resut = await Context.Link.Where(link => link.LinkId == id).Select(link => link.SiteUrl).FirstOrDefaultAsync();
+        return resut;
     }
 }
