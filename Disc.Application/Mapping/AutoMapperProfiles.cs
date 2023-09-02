@@ -34,20 +34,20 @@ namespace Disc.Application.Mapping
             CreateMap<CreateArtistDto, Artist>().ForMember(artist =>
             artist.Country, m => m.MapFrom(i => new Country { CountryName = i.Country }));
             // Release
-            CreateMap<Release, ReleaseDto>().ForMember(releasDto =>
+            CreateMap<Release, ReleaseDetailsDto>().ForMember(releasDto =>
             releasDto.Country, m => m.MapFrom(a => a.Country.CountryName));
 
-            CreateMap<ReleaseDto, Release>()
+            CreateMap<ReleaseDetailsDto, Release>()
             .ForMember(release => release.Country, m => m.MapFrom(i => new Country
             {
                 CountryName = i.Country
             }))
             .ForMember(release => release.Condition, m => m.MapFrom(i => new Condition
             {
-                ConditionName = i.Condition
+                ConditionName = i.Condition.ConditionName
             }));
 
-            CreateMap<Release, CreateReleasDto>()
+            CreateMap<Release, ReleasDetailsWithArtistDto>()
            .ForMember(release => release.Genre, m => m.MapFrom(i => i.ReleaseGenre.Select(x => x.Genre.GenreName).ToList()))
            .ForMember(release => release.Style, m => m.MapFrom(i => i.ReleaseStyle.Select(x => x.Style.StyleName).ToList()))
            .ForMember(release => release.Country, m => m.MapFrom(i => i.Country.CountryName))
