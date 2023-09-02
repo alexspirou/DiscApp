@@ -26,9 +26,9 @@ namespace Disc.WebApi.Controllers
         [HttpPost, Route("CreateRelases/{newReleases}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateReleases(CreateReleasDto[] newReleases)
+        public async Task<IActionResult> CreateReleases(ReleasDetailsWithArtistDto[] newReleases)
         {
-            var result = new List<CreateReleasDto>();
+            var result = new List<ReleasDetailsWithArtistDto>();
             foreach (var newRelease in newReleases)
             {
                 if (newRelease is null)
@@ -37,7 +37,7 @@ namespace Disc.WebApi.Controllers
                 }
                 var release = new Release()
                 {
-                    Condition = new Condition { ConditionName = newRelease.Condition },
+                    Condition = new Condition { ConditionName = newRelease.Condition.ConditionName },
                     Title = newRelease.Title,
                     ReleaseYear = newRelease.ReleaseYear,
                     Country = new Country { CountryName = newRelease.Country }
@@ -49,7 +49,7 @@ namespace Disc.WebApi.Controllers
                     newRelease.Genre.Select(style => new Style { StyleName = style }).ToArray());
                 var createNewRelease = await _mediator.Send(command);
 
-                result.Add(_mapper.Map<CreateReleasDto>(createNewRelease));
+                result.Add(_mapper.Map<ReleasDetailsWithArtistDto>(createNewRelease));
             }
 
 
@@ -58,11 +58,11 @@ namespace Disc.WebApi.Controllers
         [HttpPost, Route("CreateRelase/newReleases")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateRelease(CreateReleasDto newRelease)
+        public async Task<IActionResult> CreateRelease(ReleasDetailsWithArtistDto newRelease)
         {
             var release = new Release()
             {
-                Condition = new Condition { ConditionName = newRelease.Condition },
+                Condition = new Condition { ConditionName = newRelease.Condition.ConditionName },
                 Title = newRelease.Title ,
                 ReleaseYear = newRelease.ReleaseYear,
                 Country = new Country { CountryName = newRelease.Country }
@@ -74,7 +74,7 @@ namespace Disc.WebApi.Controllers
                 newRelease.Genre.Select(style => new Style { StyleName = style }).ToArray());
             var createNewRelease = await _mediator.Send(command);
 
-            return Ok(_mapper.Map<CreateReleasDto>(createNewRelease));
+            return Ok(_mapper.Map<ReleasDetailsWithArtistDto>(createNewRelease));
         }
     }
 }

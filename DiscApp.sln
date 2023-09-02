@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.Application", "Disc.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.Infrastructure", "Disc.Infrastructure\Disc.Infrastructure.csproj", "{4D896528-B0EB-491E-9625-C4D42C1C44F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.Presentation", "Disc.Presentation\Disc.Presentation.csproj", "{4E907E23-67A5-4F41-AA31-867A4F257B9F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.WebApi", "Disc.WebApi\Disc.WebApi.csproj", "{34A74B56-8697-433B-8194-CD0E9F42F8E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disc.Tests", "Disc.Tests\Disc.Tests.csproj", "{D34FCFDB-6963-4D84-B064-B0EABF3151C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disc.Tests", "Disc.Tests\Disc.Tests.csproj", "{D34FCFDB-6963-4D84-B064-B0EABF3151C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{4D896528-B0EB-491E-9625-C4D42C1C44F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D896528-B0EB-491E-9625-C4D42C1C44F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D896528-B0EB-491E-9625-C4D42C1C44F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E907E23-67A5-4F41-AA31-867A4F257B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E907E23-67A5-4F41-AA31-867A4F257B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E907E23-67A5-4F41-AA31-867A4F257B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E907E23-67A5-4F41-AA31-867A4F257B9F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34A74B56-8697-433B-8194-CD0E9F42F8E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34A74B56-8697-433B-8194-CD0E9F42F8E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A74B56-8697-433B-8194-CD0E9F42F8E8}.Release|Any CPU.ActiveCfg = Release|Any CPU

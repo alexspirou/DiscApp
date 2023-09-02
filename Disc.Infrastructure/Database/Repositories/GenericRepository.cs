@@ -56,11 +56,6 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
     }
 
 
-    public T GetById(uint id)
-    {
-        var result = GetByIdAsync(id).Result;
-        return result;
-    }
     public async Task<T> GetByIdAsync(uint id)
     {
         try

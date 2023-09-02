@@ -1,7 +1,6 @@
 using Application;
 using Disc.Infrastructure;
 using Newtonsoft.Json;
-using Presentation;
 using Serilog;
 
 namespace WebApi
@@ -15,8 +14,7 @@ namespace WebApi
             // Add services to the container.
             builder.Services
                 .AddApplication()
-                .AddInfrastructure()
-                .AddPresentation();
+                .AddInfrastructure();
 
 
             builder.Services.AddCors();
