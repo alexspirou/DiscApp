@@ -7,6 +7,7 @@ namespace Disc.Domain.Abstractions.Repositories
     {
         Task<Release> CreateReleaseAsync(Release newRelease);
         Task<IEnumerable<ReleaseGenre>> CreateReleaseGenreAsync(Release release, Genre[] genre);
+        Task<IEnumerable<ReleaseGenre>> GetReleaseGenreAsync(Release release, Genre[] genre);
         Task<IEnumerable<ReleaseStyle>> CreateReleaseStyleAsync(Release release, Style[] genre);
         Task<Release?> GetReleaseByTitleAsync(string name);
         Task<Release?> GetReleaseByDiscogIdAsync(uint id);

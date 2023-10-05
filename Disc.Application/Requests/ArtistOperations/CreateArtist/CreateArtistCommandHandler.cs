@@ -2,7 +2,7 @@
 using Disc.Domain.Entities;
 using MediatR;
 
-namespace Disc.Application.Requests.ArtistOperations.Commands.CreateArtist
+namespace Disc.Application.Requests.ArtistOperations.CreateArtist
 {
     public class CreateArtistCommandHandler : IRequestHandler<CreateArtistCommand, Artist>
     {
@@ -16,18 +16,20 @@ namespace Disc.Application.Requests.ArtistOperations.Commands.CreateArtist
         }
         public async Task<Artist> Handle(CreateArtistCommand request, CancellationToken cancellationToken)
         {
-            var artist = await _artistRepository.GetArtistByNameAsync(request.Artist.ArtistName);
-            var country = await _countryRepository.GetCountryByNameAsync(request.Artist.Country.CountryName);
+            var artist = await _artistRepository.GetArtistByNameAsync(request.ArtistName);
 
-            if(country is null)
-            {
-                throw new Exception("The country that is passed is not exist.");
-            }
             if (artist is null)
             {
-                request.Artist.Country = country;
-                artist = await _artistRepository.CreateArtistAsync(request.Artist);
+                var country = await _countryRepository.GetCountryByNameAsync(request.Country);
+
+                if (country is null)
+                {
+                    throw new Exception("The country that is passed is not exist.");
+                }
+                artist.Country = country;
+                artist = await _artistRepository.CreateArtistAsync(artist);
             }
+
             return artist;
         }
 

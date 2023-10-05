@@ -1,22 +1,27 @@
 ﻿using Disc.Application.DTOs.Release;
+using Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease;
 using Disc.Domain.Entities;
 
 namespace Disc.Application.Extensions
 {
     public static class ReleaseExtensions
     {
-        public static ReleasDetailsWithArtistDto ToCreateReleasDto(this Release entity)
+        #region ToReleaseDto
+
+        public static CreateReleaseCommand ToCreateReleaseCommand(this Release entity)
         {
-            return new ReleasDetailsWithArtistDto
+            return new CreateReleaseCommand
             {
                 Condition = entity?.Condition.ToConditionDto(),
                 Country = entity?.Country?.CountryName,
                 ReleaseYear = entity?.ReleaseYear == null ? 0 : entity.ReleaseYear,
+                ArtistName = entity.Artist.ArtistName
             };
-        }
-        public static List<ReleasDetailsWithArtistDto> ToCreateReleasDtoList(this IEnumerable<Release> entities)
+        }  
+       
+        public static List<CreateReleaseCommand> ToCreateReleasDtoList(this IEnumerable<Release> entities)
         {
-            return entities?.Select(entity => entity.ToCreateReleasDto()).ToList();
+            return entities?.Select(entity => entity.ToCreateReleaseCommand()).ToList();
         }
         public static ReleaseDetailsDto ToReleaseDetailsDto(this Release release)
         {
@@ -30,11 +35,32 @@ namespace Disc.Application.Extensions
                 Genre = release.ReleaseGenre.Select(x => x.Genre.GenreName).ToArray()
             };
         }
-
         public static List<ReleaseDetailsDto> ToToReleaseDetailsDtoList(this IEnumerable<Release> releases)
         {
             return releases?.Select(release => release.ToReleaseDetailsDto()).ToList();
-        }     
+        }
 
+        #endregion
+
+        #region ToRelease
+        public static Release ToRelease(this ReleasDetailsWithArtistDto dto)
+        {
+
+            var release = new Release()
+            {
+                Condition = new Condition { ConditionName = dto.Condition.ConditionName },
+                Title = dto.Title,
+                ReleaseYear = dto.ReleaseYear,
+                Country = new Country { CountryName = dto.Country }
+            };
+            return release;
+        }
+
+        public static List<Release> ToReleaseList(this IEnumerable<ReleasDetailsWithArtistDto> dtos)
+        {
+            return dtos?.Select(dto => dto.ToRelease()).ToList();
+        }
+
+        #endregion
     }
 }

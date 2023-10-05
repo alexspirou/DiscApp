@@ -17,24 +17,37 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public async Task<Country> CreateCountryAsync(Country country)
     {
         await InsertAsync(country);
+
         return country;
     }
 
     public async Task<string?> GetCountryNameByIdAsync(uint id)
     {
-        var conditionName = await Context.Country.Where(c => c.CountryId == id).Select(c => c.CountryName).FirstOrDefaultAsync();
+        var conditionName = await Context.Country
+            .Where(c => c.CountryId == id)
+            .Select(c => c.CountryName)
+            .FirstOrDefaultAsync();
+
         return conditionName;
     }
 
     public async Task<IEnumerable<Artist>> GetArtistsByCountryIdAsync(uint id)
     {
-        var releases = await Context.Country.Include(c => c.Artists).Where(c => c.CountryId == id).SelectMany(c => c.Artists).ToListAsync();
+        var releases = await Context.Country
+            .Include(c => c.Artists)
+            .Where(c => c.CountryId == id)
+            .SelectMany(c => c.Artists)
+            .ToListAsync();
+
         return releases;
     }
 
     public async Task<Country?> GetCountryByNameAsync(string name)
     {
-        var country = await Context.Country.Where(c => c.CountryName == name).FirstOrDefaultAsync();
+        var country = await Context.Country
+            .Where(c => c.CountryName == name)
+            .FirstOrDefaultAsync();
+
         return country;
     }
 

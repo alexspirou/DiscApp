@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Disc.Application.DTOs.Release;
+using Disc.Application.Extensions;
+using Disc.Application.Requests.ArtistOperations.ArtistDetails;
 using Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Disc.WebApi.Controllers
 {
@@ -26,55 +29,35 @@ namespace Disc.WebApi.Controllers
         [HttpPost, Route("CreateRelases/{newReleases}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateReleases(ReleasDetailsWithArtistDto[] newReleases)
+        public async Task<IActionResult> CreateReleases(CreateReleaseCommand[] newReleases)
         {
-            var result = new List<ReleasDetailsWithArtistDto>();
+            var result = new List<CreateReleaseCommand>();
             foreach (var newRelease in newReleases)
             {
-                if (newRelease is null)
-                {
-                    continue;
-                }
-                var release = new Release()
-                {
-                    Condition = new Condition { ConditionName = newRelease.Condition.ConditionName },
-                    Title = newRelease.Title,
-                    ReleaseYear = newRelease.ReleaseYear,
-                    Country = new Country { CountryName = newRelease.Country }
-                };
-                var command = new CreateReleaseCommand(
-                    release,
-                    _mapper.Map<Artist>(newRelease.Artist),
-                     newRelease.Style.Select(genre => new Genre { GenreName = genre }).ToArray(),
-                    newRelease.Genre.Select(style => new Style { StyleName = style }).ToArray());
-                var createNewRelease = await _mediator.Send(command);
-
-                result.Add(_mapper.Map<ReleasDetailsWithArtistDto>(createNewRelease));
+                var createNewRelease = await _mediator.Send(newRelease);
+                result.Add(createNewRelease.ToCreateReleaseCommand());
             }
-
-
             return Ok(result);
         }
         [HttpPost, Route("CreateRelase/newReleases")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateRelease(ReleasDetailsWithArtistDto newRelease)
+        public async Task<IActionResult> CreateRelease(CreateReleaseCommand newRelease)
         {
-            var release = new Release()
-            {
-                Condition = new Condition { ConditionName = newRelease.Condition.ConditionName },
-                Title = newRelease.Title ,
-                ReleaseYear = newRelease.ReleaseYear,
-                Country = new Country { CountryName = newRelease.Country }
-            };
-            var command = new CreateReleaseCommand(
-                release,
-                _mapper.Map<Artist>(newRelease.Artist),
-                 newRelease.Style.Select(genre => new Genre { GenreName = genre }).ToArray(),
-                newRelease.Genre.Select(style => new Style { StyleName = style }).ToArray());
-            var createNewRelease = await _mediator.Send(command);
+            var createNewRelease = await _mediator.Send(newRelease);
+            return Ok(createNewRelease.ToCreateReleaseCommand());
+        }
 
-            return Ok(_mapper.Map<ReleasDetailsWithArtistDto>(createNewRelease));
+        [HttpGet, Route("GetAllReleaseDetails/{name}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetArtistDetails(string name)
+        {
+
+            var command = new GetArtistDetailsQuery(name);
+            var artistDetails = await _mediator.Send(command);
+
+            return Ok(JsonConvert.SerializeObject(artistDetails));
         }
     }
 }

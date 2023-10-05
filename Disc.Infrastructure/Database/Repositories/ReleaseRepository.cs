@@ -16,9 +16,10 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
     }
 
     public async Task<Release> CreateReleaseAsync(Release newRelease)
-    {
-        Context.Release.Add(newRelease);
-        await InsertAsync(newRelease);
+     {
+        Context.Release.Update(newRelease);
+        await SaveAsync();
+
         return newRelease;
     }
 
@@ -60,15 +61,32 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
 
     public async Task<Release?> GetReleaseByDiscogIdAsync(uint discogdId)
     {
-        var result = await Context.Release.Where(release => release.DiscogsId == discogdId).Select(release => release).SingleOrDefaultAsync();
+        var result = await Context.Release
+            .Where(release => release.DiscogsId == discogdId)
+            .Select(release => release)
+            .SingleOrDefaultAsync();
+
         return result;
     }
 
     public async Task<Release?> GetReleaseByTitleAsync(string name)
     {
-        var result = await Context.Release.Where(release => release.Title == name).Select(release => release).FirstOrDefaultAsync();
+        var result = await Context.Release
+            .Where(release => release.Title == name)
+            .Select(release => release)
+            .FirstOrDefaultAsync();
+
         return result;
     }
 
+    public async Task<IEnumerable<ReleaseGenre>> GetReleaseGenreAsync(Release release, Genre[] genre)
+    {
+        var result = await Context.Release
+            .Where(release => release.DiscogsId == release.DiscogsId)
+            .Include(g => g.ReleaseGenre)
+            .SelectMany(x=> x.ReleaseGenre)
+            .ToListAsync();
 
+        return result;
+    }
 }

@@ -28,10 +28,10 @@ namespace Disc.Application.Mapping
             CreateMap<Style, StyleDto>();
             CreateMap<StyleDto, Style>();
             // Artist
-            CreateMap<Artist, CreateArtistDto>().ForMember(artistDto =>
+            CreateMap<Artist, ArtistDTO>().ForMember(artistDto =>
             artistDto.Country, m => m.MapFrom(a => a.Country.CountryName));
 
-            CreateMap<CreateArtistDto, Artist>().ForMember(artist =>
+            CreateMap<ArtistDTO, Artist>().ForMember(artist =>
             artist.Country, m => m.MapFrom(i => new Country { CountryName = i.Country }));
             // Release
             CreateMap<Release, ReleaseDetailsDto>().ForMember(releasDto =>
@@ -52,7 +52,7 @@ namespace Disc.Application.Mapping
            .ForMember(release => release.Style, m => m.MapFrom(i => i.ReleaseStyle.Select(x => x.Style.StyleName).ToList()))
            .ForMember(release => release.Country, m => m.MapFrom(i => i.Country.CountryName))
            .ForMember(release => release.Condition, m => m.MapFrom(i => i.Condition.ConditionName))
-           .ForMember(release => release.Artist, m => m.MapFrom(i => new CreateArtistDto(i.Artist.ArtistName, i.Artist.RealName, i.Artist.Country.CountryName)));
+           .ForMember(release => release.Artist, m => m.MapFrom(i => new ArtistDTO(i.Artist.ArtistName, i.Artist.RealName, i.Artist.Country.CountryName)));
 
         }
 

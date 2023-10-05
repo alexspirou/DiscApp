@@ -16,18 +16,26 @@ namespace Disc.Infrastructure.Database.Repositories
         {
             Context.Style.Add(newStyle);
             await SaveAsync();
+
             return newStyle;    
         }
 
         public async Task<string?> GetStyleNameByIdAsync(uint id)
         {
-            var result = await Context.Style.Where(s => s.StyleId == id).Select(c => c.StyleName).SingleOrDefaultAsync();
+            var result = await Context.Style
+                .Where(s => s.StyleId == id)
+                .Select(c => c.StyleName)
+                .SingleOrDefaultAsync();
+
             return result;
         }
 
         public async Task<Style?> GetStyleByNameAsync(string name)
         {
-            var result = await Context.Style.Where(s => s.StyleName == name).FirstOrDefaultAsync();
+            var result = await Context.Style
+                .Where(s => s.StyleName == name)
+                .FirstOrDefaultAsync();
+
             return result;
         }
     }

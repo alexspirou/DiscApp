@@ -25,9 +25,4 @@
     <ProjectReference Include="..\Disc.Domain\Disc.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\ArtistDetails\Commands\" />
-    <Folder Include="Services\ArtistDetails\Queries\" />
-  </ItemGroup>
-
 </Project>

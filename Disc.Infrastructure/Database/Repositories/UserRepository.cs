@@ -13,12 +13,18 @@ namespace Disc.Infrastructure.Database.Repositories
 
         public string GetNameByUserID(uint id)
         {
-            return Context.User.Where(usr => usr.UserId == id).Select(usr => usr.Username).ToString();
+            var result = Context.User
+                .Where(usr => usr.UserId == id)
+                .Select(usr => usr.Username).FirstOrDefault();
+
+            return result;
         }
 
         public IEnumerable<User?> GetUserById(uint id)
         {
-            return Context.User.Where(usr => usr.UserId == (int)id).ToList();
+            return Context.User
+                .Where(usr => usr.UserId == (int)id)
+                .ToList();
         }
     }
 }

@@ -20,24 +20,36 @@ namespace Disc.Infrastructure.Database.Repositories
 
             Context.Genre.Add(newGenre);
             await SaveAsync();
+
             return newGenre;
         }
 
         public async Task<Genre?> GetGenreByNameAsync(string name)
         {
-            var result = await Context.Genre.Where(genre => genre.GenreName == name).SingleOrDefaultAsync();
+            var result = await Context.Genre
+                .Where(genre => genre.GenreName == name)
+                .SingleOrDefaultAsync();
             return result;
         }
 
         public async Task<string?> GetGenreNameByIdAsync(uint id)
         {
-            var result = await Context.Genre.Where(genre => genre.GenreId == id).Select(genre => genre.GenreName).SingleOrDefaultAsync();
+            var result = await Context.Genre
+                .Where(genre => genre.GenreId == id)
+                .Select(genre => genre.GenreName)
+                .SingleOrDefaultAsync();
+
             return result;
         }
 
         public async Task<Genre?> GetGenreByIdAsync(uint id)
         {
-            var result = await Context.Genre.Include(genre => genre.GenreName).Where(genre => genre.GenreId == id).Select(genre => genre).SingleOrDefaultAsync();
+            var result = await Context.Genre
+                .Include(genre => genre.GenreName)
+                .Where(genre => genre.GenreId == id)
+                .Select(genre => genre)
+                .SingleOrDefaultAsync();
+
             return result;
         }
 

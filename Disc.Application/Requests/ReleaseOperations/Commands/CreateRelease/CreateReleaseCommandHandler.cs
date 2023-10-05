@@ -1,6 +1,6 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
-using Disc.Domain.Exceptions;
+using Disc.Domain.Exceptions.ArtistExceptions;
 using Disc.Domain.Exceptions.ConditionExceptions;
 using Disc.Domain.Exceptions.CountryExceptions;
 using MediatR;
@@ -16,7 +16,7 @@ namespace Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease
         IConditionRepository _conditionRepository;
         IGenreRepository _genreRepository;
         public CreateReleaseCommandHandler(IReleaseRepository releaseRepository, IArtistRepository artistRepository,
-            ICountryRepository countryRepository, IStyleRepository styleRepository, 
+            ICountryRepository countryRepository, IStyleRepository styleRepository,
             IConditionRepository conditionRepository, IGenreRepository genreRepository)
         {
             _releaseRepository = releaseRepository;
@@ -28,70 +28,68 @@ namespace Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease
         }
         public async Task<Release> Handle(CreateReleaseCommand request, CancellationToken cancellationToken)
         {
-            var artist = await ValidateOrCreateArtist(request);
-            var release = await ValidateOrCreateRelease(request, artist);
-            // Assign Genre to release
-            foreach(var requestGenre in request.Genres)
+            var newArtist = await _artistRepository.GetArtistByNameAsync(request.ArtistName);
+            if (newArtist is null)
             {
-                var genre = _genreRepository.GetGenreByNameAsync(requestGenre.GenreName);
+                throw new InvalidArtistException(request.ArtistName);
+            }
+            var release = await CreateRelease(request, newArtist);
+
+            // Assign Genre to release
+            var genreList = new List<Genre>();
+            foreach (var requestGenre in request.Genre)
+            {
+                var genre = await _genreRepository.GetGenreByNameAsync(requestGenre);
                 if (genre is null)
                 {
-                    throw new NullReferenceException($"{requestGenre.GenreName} : 'Genre' is not valid.");
+                    throw new NullReferenceException($"{requestGenre} : 'Genre' is not valid.");
                 }
-            }   
-            foreach(var requestStyle in request.Styles)
+                genreList.Add(await _genreRepository.GetGenreByNameAsync(requestGenre));
+
+            }
+            release.ReleaseGenre = await _releaseRepository.CreateReleaseGenreAsync(release, genreList.ToArray());
+
+            // Assign Style to release
+            var styleList = new List<Style>();
+            foreach (var requestStyle in request.Style)
             {
-                var style = await _styleRepository.GetStyleByNameAsync(requestStyle.StyleName);
+                var style = await _styleRepository.GetStyleByNameAsync(requestStyle);
                 if (style is null)
                 {
-                    throw new NullReferenceException($"{requestStyle.StyleName} : 'Style' is valid.");
+                    throw new NullReferenceException($"{requestStyle} : 'Style' is valid.");
                 }
+                styleList.Add(await _styleRepository.GetStyleByNameAsync(requestStyle));
+
             }
-
-
-            release.ReleaseGenre = await _releaseRepository.CreateReleaseGenreAsync(release, request.Genres);
-            release.ReleaseStyle = await _releaseRepository.CreateReleaseStyleAsync(release, request.Styles); ;
-
-
+            release.ReleaseStyle = await _releaseRepository.CreateReleaseStyleAsync(release, styleList.ToArray());
 
             return release;
         }
 
-        private async Task<Release?> ValidateOrCreateRelease(CreateReleaseCommand request, Artist artist)
+        private async Task<Release> CreateRelease(CreateReleaseCommand newReleaseRequest, Artist artist)
         {
-            var release = await _releaseRepository.GetReleaseByDiscogIdAsync(request.Release.DiscogsId);
-            if (release is null)
+            var release = new Release()
             {
-                request.Release.Artist = artist;
-                request.Release.Country = await _countryRepository.GetCountryByNameAsync(request.Release.Country.CountryName);
-                if (request.Release.Country is null)
-                {
-                    throw new InvalidCountryException(request.Release.Artist.Country.CountryName);
-                }
-                if (request.Release.Condition is null)
-                {
-                    throw new InvalidConditionException(request.Release.Artist.Country.CountryName);
-                }
-                request.Release.Condition = await _conditionRepository.GetConditionByNameAsync(request.Release.Condition.ConditionName);
-                release = await _releaseRepository.CreateReleaseAsync(request.Release);
+                Title = newReleaseRequest.Title,
+                ReleaseYear = newReleaseRequest.ReleaseYear,
+                Artist = artist
+            };
+
+            release.Country = await _countryRepository.GetCountryByNameAsync(newReleaseRequest.Country);
+            if (release.Country is null)
+            {
+                throw new InvalidCountryException(newReleaseRequest.Country);
             }
+
+            release.Condition = await _conditionRepository.GetConditionByNameAsync(newReleaseRequest.Condition.ConditionName);
+            if (release.Condition is null)
+            {
+                throw new InvalidConditionException(newReleaseRequest.Condition.ConditionName);
+            }
+
+            release = await _releaseRepository.CreateReleaseAsync(release);
 
             return release;
-        }
-
-        private async Task<Artist?> ValidateOrCreateArtist(CreateReleaseCommand request)
-        {
-            var artist = await _artistRepository.GetArtistByNameAsync(request.Artist.ArtistName);
-            if (artist is null)
-            {
-                request.Artist.Country = await _countryRepository.GetCountryByNameAsync(request.Artist.Country.CountryName);
-                if (request.Artist.Country is null)
-                {
-                    throw new InvalidCountryException(request.Release.Artist.Country.CountryName);
-                }
-                artist =  await _artistRepository.CreateArtistAsync(request.Artist);
-            }
-            return artist;
         }
     }
 }

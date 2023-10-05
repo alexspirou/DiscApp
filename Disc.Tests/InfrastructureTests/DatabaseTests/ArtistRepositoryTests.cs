@@ -113,6 +113,18 @@ namespace Disc.Tests.InfrastructureTests.DatabaseTests
             var createdArtist = await artistRepository.GetReleaseByArtistIDAsync(id);
             //Assert
 
+        }   
+        [Fact]
+        public async Task SearchArtistsByName_ShouldBe_Equal_With_Expected()
+        {
+            //  Arrange
+            var dbContext = await GetDbContext();
+            var artistRepository = new ArtistRepository(dbContext);
+            uint id = 1;
+            // Act
+            var result = await artistRepository.SearchArtistsByNameAsync("ArtistName");
+            //Assert
+            result.Count().Should().Be(9);
         }
 
 

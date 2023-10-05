@@ -1,7 +1,10 @@
 using AutoMapper;
 using Disc.Application.DTOs.Artist;
-using Disc.Application.Requests.ArtistOperations.Commands.CreateArtist;
-using Disc.Application.Requests.ArtistsOperations.Queries.GetAllArtist;
+using Disc.Application.Extensions;
+using Disc.Application.Requests.ArtistOperations.ArtistDetails;
+using Disc.Application.Requests.ArtistOperations.CreateArtist;
+using Disc.Application.Requests.ArtistOperations.GetAllArtist;
+using Disc.Application.Requests.ArtistOperations.SearchArtist;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,29 +39,50 @@ namespace WebApi.Controllers
         [HttpPost, Route("CreateArtist/newArtist")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateArtist(CreateArtistDto newArtist)
+        public async Task<IActionResult> CreateArtist(CreateArtistCommand createNewArtist)
         {
-            var artistMap = _mapper.Map<Artist>(newArtist);
-            var command = new CreateArtistCommand(artistMap);
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(createNewArtist);
+            return Ok(result.ToCreateArtistCommand());
+        }
 
-            return Ok();
-        } 
-        
         [HttpPost, Route("CreateArtist/newArtists")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateArtist(CreateArtistDto[] newArtists)
+        public async Task<IActionResult> CreateArtist(CreateArtistCommand[] createNewArtists)
         {
-            var result = new List<Artist>();
-            foreach (var newArtist in newArtists)
+            var result = new List<CreateArtistCommand>();
+            foreach (var createNewArtist in createNewArtists)
             {
-                var command = new CreateArtistCommand(_mapper.Map<Artist>(newArtist));
-                var createdArtist = await _mediator.Send(command);
-
-                result.Add(createdArtist);
+                var createdArtist = await _mediator.Send(createNewArtist);
+                result.Add(createdArtist.ToCreateArtistCommand());
             }
             return Ok(JsonConvert.SerializeObject(result));
+        }
+
+        [HttpGet, Route("GetArtistDetails/{name}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetArtistDetails(string name)
+        {
+
+            var command = new GetArtistDetailsQuery(name);
+            var artistDetails = await _mediator.Send(command);
+
+            return Ok(JsonConvert.SerializeObject(artistDetails));
+        }
+
+        [HttpGet, Route("SearchArtistByName/{name}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> SearchArtistByName(string name)
+        {
+
+            var query = new SearchArtistQuery();
+            var artistDetails = await _mediator.Send(name);
+            return Ok(JsonConvert.SerializeObject(artistDetails, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
     }
 }

@@ -8,7 +8,11 @@ public class LinkRepository : GenericRepository<Link>, ILinkRepository
 {
     public async Task<string?> GetUrlByIdAsync(uint id)
     {
-        var resut = await Context.Link.Where(link => link.LinkId == id).Select(link => link.SiteUrl).FirstOrDefaultAsync();
+        var resut = await Context.Link
+            .Where(link => link.LinkId == id)
+            .Select(link => link.SiteUrl)
+            .FirstOrDefaultAsync();
+
         return resut;
     }
 }

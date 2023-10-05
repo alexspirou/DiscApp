@@ -4,10 +4,11 @@ namespace Disc.Domain.Exceptions.ArtistExceptions
 {
     public class InvalidArtistException : Exception
     {
-        public InvalidArtistException(Artist artist)
-            : base($"Invalid artist: {artist.ArtistName}")
+        public InvalidArtistException(string name)
+            : base($"Invalid artist: {name}")
         {
-        }
+        } 
+
 
         public InvalidArtistException(Artist artist, string message)
             : base($"Invalid artist: {artist.ArtistName}. {message}")

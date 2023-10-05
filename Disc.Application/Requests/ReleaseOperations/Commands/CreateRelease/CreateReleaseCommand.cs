@@ -1,21 +1,23 @@
 ﻿using MediatR;
 using Disc.Domain.Entities;
+using Disc.Application.DTOs.Condition;
+using Disc.Application.DTOs.Artist;
 
 namespace Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease
 {
     public class CreateReleaseCommand : IRequest<Release>
     {
-        public Release Release { get; set; }
-        public Artist Artist { get; set; }
-        public Genre [] Genres { get; set; }
-        public Style [] Styles { get; set; }
+        public string Title { get; set; }
+        public int ReleaseYear { get; set; }
+        public string Country { get; set; }
+        public ConditionDto Condition { get; set; }
+        public string[] Style { get; set; }
+        public string[] Genre { get; set; }
+        public string ArtistName { get; set; }
 
-        public CreateReleaseCommand(Release releases, Artist artist, Genre[] genre, Style[] style)
+        public CreateReleaseCommand()
         {
-            Release = releases;
-            Artist = artist;
-            Genres = genre;
-            Styles = style;
+
         }
 
 

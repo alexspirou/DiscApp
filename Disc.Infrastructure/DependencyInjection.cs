@@ -1,5 +1,7 @@
-﻿using Disc.Domain.Abstractions.Repositories;
+﻿using Disc.Application.ServicesAbstractions;
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Infrastructure.Database.Repositories;
+using Disc.Infrastructure.Services;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,8 @@ namespace Disc.Infrastructure
             services.AddScoped<IConditionRepository, ConditioRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IStyleRepository, StyleRepository>();
+
+            services.AddScoped<IShowArtistDetailsService, ShowArtistDetailsService>();
             return services;
         }
     }

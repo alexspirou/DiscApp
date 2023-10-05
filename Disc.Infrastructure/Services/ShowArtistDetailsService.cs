@@ -1,9 +1,10 @@
 ﻿using Disc.Application.DTOs.Artist;
-using Disc.Application.Services.ArtistDetails;
 using Disc.Domain.Abstractions.Repositories;
 using Disc.Application.Extensions;
+using Disc.Application.ServicesAbstractions;
+using Disc.Application.Requests.ArtistOperations.CreateArtist;
 
-namespace Disc.Infrastructure.Services.ArtistDetailsImpl
+namespace Disc.Infrastructure.Services
 {
     public class ShowArtistDetailsService : IShowArtistDetailsService
     {
@@ -15,11 +16,11 @@ namespace Disc.Infrastructure.Services.ArtistDetailsImpl
             _artistRepository = artistRepository;
         }
 
-        public async Task<ArtistDetailsDto> GetArtistDetailsAsync(uint id)
+        public async Task<CreateArtistCommand> GetArtistDetailsAsync(string name)
         {
-            var artist = await _artistRepository.GetByIdAsync(id);
+            var artist = await _artistRepository.GetArtistByNameAsync(name);
 
-           var artistDetails =  artist.ToArtistDetailsDto();
+            var artistDetails = artist.ToCreateArtistCommand();
 
             return artistDetails;
         }

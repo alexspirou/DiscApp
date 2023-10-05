@@ -1,6 +1,5 @@
-﻿using Disc.Application.DTOs.Artist;
-using Disc.Infrastructure.Database.Repositories;
-using Disc.Infrastructure.Services.ArtistDetailsImpl;
+﻿using Disc.Infrastructure.Database.Repositories;
+using Disc.Infrastructure.Services;
 using Disc.Tests.InfrastructureTests.DatabaseTests;
 using FluentAssertions;
 using Infrastructure.Database;
@@ -32,7 +31,7 @@ namespace Disc.Tests.InfrastructureTests.ServiceTests
             var artistRepo = new ArtistRepository(await GetDbContext());
             var showArtistDetailsService = new ShowArtistDetailsService(artistRepo);
             uint id = 1;
-            var artistDetails =  await showArtistDetailsService.GetArtistDetailsAsync(id);
+            var artistDetails =  await showArtistDetailsService.GetArtistDetailsAsync($"ArtistName{id}");
 
             artistDetails.ArtistName.Should().BeEquivalentTo($"ArtistName{id}");
             artistDetails.RealName.Should().BeEquivalentTo($"RealName{id}");
@@ -53,7 +52,7 @@ namespace Disc.Tests.InfrastructureTests.ServiceTests
             var artistRepo = new ArtistRepository(await GetDbContext());
             var showArtistDetailsService = new ShowArtistDetailsService(artistRepo);
             uint id = 2;
-            var artistDetails = await showArtistDetailsService.GetArtistDetailsAsync(id);
+            var artistDetails = await showArtistDetailsService.GetArtistDetailsAsync($"ArtistName{id}");
 
             artistDetails.ArtistName.Should().NotBe("ArtistName1");
             artistDetails.RealName.Should().NotBe("RealName1");

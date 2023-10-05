@@ -2,7 +2,7 @@
 using Disc.Domain.Entities;
 using MediatR;
 
-namespace Disc.Application.Requests.ArtistsOperations.Queries.GetAllArtist
+namespace Disc.Application.Requests.ArtistOperations.GetAllArtist
 {
     internal class GetAllArtistsQueryHandler : IRequestHandler<GetAllArtistsQuery, List<Artist>>
     {
