@@ -1,27 +1,31 @@
 ﻿using Disc.Application.DTOs.Artist;
+using Disc.Application.Extensions;
 using Disc.Application.ServicesAbstractions;
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Exceptions.ArtistExceptions;
 using MediatR;
+using System.Xml.Linq;
 
 namespace Disc.Application.Requests.ArtistOperations.ArtistDetails
 {
-    public class GetArtistDetailsQueryHandler : IRequestHandler<GetArtistDetailsQuery, ArtistDetailsDto>
+    public class GetArtistDetailsQueryHandler : IRequestHandler<GetArtistDetailsQuery, GetArtistDetailsQuery>
     {
-        private readonly IShowArtistDetailsService _showArtistDetailsService;
-        public GetArtistDetailsQueryHandler(IShowArtistDetailsService showArtistDetailsService)
+        private readonly IArtistRepository _artistRepository;
+        public GetArtistDetailsQueryHandler(IArtistRepository artistRepository)
         {
-            _showArtistDetailsService = showArtistDetailsService;
+            _artistRepository = artistRepository;
         }
-        public async Task<ArtistDetailsDto> Handle(GetArtistDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<GetArtistDetailsQuery> Handle(GetArtistDetailsQuery request, CancellationToken cancellationToken)
         {
+            var artist = await _artistRepository.GetArtistByNameAsync(request.RequestedArtistName);
 
-            var artistDetails = await _showArtistDetailsService.GetArtistDetailsAsync(request.ArtistName);
-            if (artistDetails is null)
+            if (artist is null)
             {
-                throw new InvalidArtistException(request.ArtistName);
+                throw new InvalidArtistException(request.RequestedArtistName);
             }
 
-            return artistDetails;
+            return artist.ToGetArtistDetailsQuery();
+   
         }
     }
 }

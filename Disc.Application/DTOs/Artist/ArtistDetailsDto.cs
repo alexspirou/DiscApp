@@ -9,7 +9,7 @@ namespace Disc.Application.DTOs.Artist
         public string RealName { get; set; }
         public string Country { get; set; } = null!;
         public IEnumerable<ReleaseDetailsDto> Releases { get; set; }
-        public IEnumerable<LinkDto>  Links { get; set; }
+        public IEnumerable<string>  Links { get; set; }
 
         // TODO : Add image, videos 
     }

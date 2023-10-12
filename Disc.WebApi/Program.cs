@@ -17,7 +17,15 @@ namespace WebApi
                 .AddInfrastructure();
 
 
-            builder.Services.AddCors();
+            builder.Services.AddCors(
+            options =>
+            {
+                options.AddPolicy( "Any",
+                cors =>
+                {
+                        cors.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,7 +52,7 @@ namespace WebApi
 
             app.UseAuthorization();
 
-
+            app.UseCors("Any");
             app.MapControllers();
 
             app.Run();

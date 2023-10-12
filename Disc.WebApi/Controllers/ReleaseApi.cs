@@ -3,6 +3,7 @@ using Disc.Application.DTOs.Release;
 using Disc.Application.Extensions;
 using Disc.Application.Requests.ArtistOperations.ArtistDetails;
 using Disc.Application.Requests.ReleaseOperations.Commands.CreateRelease;
+using Disc.Application.Requests.ReleaseOperations.Queries;
 using Disc.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -48,16 +49,15 @@ namespace Disc.WebApi.Controllers
             return Ok(createNewRelease.ToCreateReleaseCommand());
         }
 
-        [HttpGet, Route("GetAllReleaseDetails/{name}")]
+
+        [HttpGet, Route("GetReleaseDetails/{from}/{to}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetArtistDetails(string name)
+        public async Task<IActionResult> GetReleaseDetails(int from, int to)
         {
+            var releaseDetails = await _mediator.Send(new GetReleasesQuery(from, to));
 
-            var command = new GetArtistDetailsQuery(name);
-            var artistDetails = await _mediator.Send(command);
-
-            return Ok(JsonConvert.SerializeObject(artistDetails));
+            return Ok(JsonConvert.SerializeObject(releaseDetails));
         }
     }
 }

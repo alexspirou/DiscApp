@@ -1,6 +1,7 @@
 ﻿using Disc.Application.DTOs.Artist;
 using Disc.Application.DTOs.Condition;
 using Disc.Application.DTOs.Release;
+using Disc.Application.Requests.ArtistOperations.ArtistDetails;
 using Disc.Application.Requests.ArtistOperations.CreateArtist;
 using Disc.Application.Requests.ArtistOperations.SearchArtist;
 using Disc.Domain.Entities;
@@ -14,13 +15,15 @@ namespace Disc.Application.Extensions
         {
             return new CreateArtistCommand
             {
-                ArtistName = artist.ArtistName == null ? "N/A" : artist.ArtistName,
-                RealName = artist.RealName == null ? "N/A" : artist.RealName,
-                Country = artist.Country == null ? "N/A" : artist.Country.CountryName,
-                Link = artist.Links.Select(x => x.Link.SiteUrl).ToArray()
+                ArtistDetails = new ArtistDetailsDto
+                {
+                    ArtistName = artist.ArtistName == null ? "N/A" : artist.ArtistName,
+                    RealName = artist.RealName == null ? "N/A" : artist.RealName,
+                    Country = artist.Country == null ? "N/A" : artist.Country.CountryName,
+                    Links = artist.Links.Select(x => x.Link.SiteUrl).ToArray()
+                }
             };
         }   
-        
 
         public static List<CreateArtistCommand> ToCreateArtistCommandList(this IEnumerable<Artist> artists)
         {
@@ -46,6 +49,23 @@ namespace Disc.Application.Extensions
         {
             return artists?.Select(a => a.ToSearchArtistQuery()).ToArray();
         }
+        #endregion
+
+        #region GetArtistDetailsQuery extensions
+
+        public static GetArtistDetailsQuery ToGetArtistDetailsQuery(this Artist artist)
+        {
+            return new GetArtistDetailsQuery
+            {
+                Releases = artist.Release.ToToReleaseDetailsDtoArray(),
+                ArtistName = artist.ArtistName == null ? "N/A" : artist.ArtistName,
+                RealName = artist.RealName == null ? "N/A" : artist.RealName,
+                Country = artist.Country == null ? "N/A" : artist.Country.CountryName,
+                Links = artist.Links.Select(x => x.Link.SiteUrl).ToArray()
+                
+            };
+        }
+
         #endregion
     }
 }

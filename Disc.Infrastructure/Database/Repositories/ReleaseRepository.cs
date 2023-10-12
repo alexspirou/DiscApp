@@ -89,4 +89,17 @@ public class ReleaseRepository : GenericRepository<Release>, IReleaseRepository
 
         return result;
     }
+
+    public async Task<IEnumerable<Release>> GetReleaseRange(int from, int to)
+    {
+        var result = await Context.Release.Skip(from).Take(to)
+            .Include(g => g.ReleaseGenre).ThenInclude(g=>g.Genre)
+            .Include(s => s.ReleaseStyle).ThenInclude(s => s.Style)
+            .Include(a => a.Artist)
+            .Include(c => c.Condition)
+            .Include(c => c.Country)
+            .ToListAsync();
+
+        return result;
+    }
 }

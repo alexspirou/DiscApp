@@ -27,6 +27,7 @@ namespace Disc.Application.Extensions
         {
             return new ReleaseDetailsDto
             {
+                ArtistName = release.Artist.ArtistName,
                 Condition = release.Condition.ToConditionDto(),
                 Country = release.Country?.CountryName,
                 ReleaseYear = release.ReleaseYear, 
@@ -38,6 +39,11 @@ namespace Disc.Application.Extensions
         public static List<ReleaseDetailsDto> ToToReleaseDetailsDtoList(this IEnumerable<Release> releases)
         {
             return releases?.Select(release => release.ToReleaseDetailsDto()).ToList();
+        }   
+        
+        public static ReleaseDetailsDto[] ToToReleaseDetailsDtoArray(this IEnumerable<Release> releases)
+        {
+            return releases?.Select(release => release.ToReleaseDetailsDto()).ToArray();
         }
 
         #endregion

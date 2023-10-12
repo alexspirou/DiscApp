@@ -50,7 +50,7 @@ public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T :
         return GetAllAsync().Result;
     }
 
-    public async Task<List<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await Entities.ToListAsync();
     }

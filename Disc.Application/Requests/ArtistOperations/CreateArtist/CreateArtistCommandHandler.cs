@@ -16,11 +16,11 @@ namespace Disc.Application.Requests.ArtistOperations.CreateArtist
         }
         public async Task<Artist> Handle(CreateArtistCommand request, CancellationToken cancellationToken)
         {
-            var artist = await _artistRepository.GetArtistByNameAsync(request.ArtistName);
+            var artist = await _artistRepository.GetArtistByNameAsync(request.ArtistDetails.ArtistName);
 
             if (artist is null)
             {
-                var country = await _countryRepository.GetCountryByNameAsync(request.Country);
+                var country = await _countryRepository.GetCountryByNameAsync(request.ArtistDetails.Country);
 
                 if (country is null)
                 {
