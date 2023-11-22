@@ -6,7 +6,7 @@ namespace Disc.Application.Requests.StyleOperations.Commands.CreateStyle
 {
     public class CreateStyleCommandHandler : IRequestHandler<CreateStyleCommand, Style>
     {
-        private readonly IStyleRepository _styleRepository;
+        private readonly Disc.Infrastructure.Database.Repositories.StyleRepository _styleRepository;
         public CreateStyleCommandHandler(IStyleRepository styleRepository)
         {
             _styleRepository = styleRepository;

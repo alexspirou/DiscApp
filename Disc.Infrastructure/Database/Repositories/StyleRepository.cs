@@ -1,8 +1,8 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
+using Disc.Infrastructure.Database.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 
 namespace Disc.Infrastructure.Database.Repositories
 {
@@ -40,4 +40,21 @@ namespace Disc.Infrastructure.Database.Repositories
         }
     }
 
+}
+public class StyleRepositoryV2 : GenericRepository<Style>, IStyleRepository
+{
+    public Task<Style> CreateStyleAsync(Style newStyle)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Style> GetStyleByNameAsync(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> GetStyleNameByIdAsync(uint id)
+    {
+        throw new NotImplementedException();
+    }
 }

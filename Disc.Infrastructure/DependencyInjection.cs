@@ -29,6 +29,7 @@ namespace Disc.Infrastructure
             services.AddScoped<IConditionRepository, ConditioRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IStyleRepository, StyleRepository>();
+            services.AddScoped<IStyleRepository, StyleRepository2>();
 
             services.AddScoped<IShowArtistDetailsService, ShowArtistDetailsService>();
             return services;
