@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         private readonly ILogger<ArtistApi> _logger;
         private readonly IMediator _mediator;
 
-        public ArtistApi(ILogger<ArtistApi> logger, IMediator mediator, IMapper mapper)
+        public ArtistApi(ILogger<ArtistApi> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
@@ -74,6 +74,15 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetArtistDetails(string name)
         {
             var artistDetails = await _mediator.Send(new GetArtistDetailsQuery(name));
+            return Ok(JsonConvert.SerializeObject(artistDetails));
+        }        
+        
+        [HttpGet, Route("GetArtists/{size}/{page}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetArtists(int size, int page)
+        {
+            var artistDetails = await _mediator.Send(new GetAllArtistsQuery(size, page));
             return Ok(JsonConvert.SerializeObject(artistDetails));
         }
     }

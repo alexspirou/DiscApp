@@ -3,6 +3,7 @@ using Disc.Application.DTOs.Condition;
 using Disc.Application.DTOs.Release;
 using Disc.Application.Requests.ArtistOperations.ArtistDetails;
 using Disc.Application.Requests.ArtistOperations.CreateArtist;
+using Disc.Application.Requests.ArtistOperations.GetAllArtist;
 using Disc.Application.Requests.ArtistOperations.SearchArtist;
 using Disc.Domain.Entities;
 
@@ -33,7 +34,7 @@ namespace Disc.Application.Extensions
 
         #endregion
 
-        #region SearchArtistDto extensions
+        #region SearchArtistQuery extensions
         public static SearchArtistQuery ToSearchArtistQuery(this Artist artist)
         {
             return new SearchArtistQuery
@@ -49,6 +50,28 @@ namespace Disc.Application.Extensions
         {
             return artists?.Select(a => a.ToSearchArtistQuery()).ToArray();
         }
+        #endregion
+
+        #region GetAllArtist extensions 
+        // TODO : Add image 
+
+        public static GetAllArtistsQuery ToGetAllArtistQuery(this Artist artist)
+        {
+            return new GetAllArtistsQuery
+            {
+                ArtistName = artist.ArtistName == null ? "N/A" : artist.ArtistName,
+            };
+        }
+        public static List<GetAllArtistsQuery> ToGetAllArtistQueryList(this IEnumerable<Artist> artists)
+        {
+            return artists?.Select(a => a.ToGetAllArtistQuery()).ToList();
+        }
+        public static GetAllArtistsQuery[] ToGetAllArtistQueryArray(this IEnumerable<Artist> artists)
+        {
+            return artists?.Select(a => a.ToGetAllArtistQuery()).ToArray();
+        }
+
+
         #endregion
 
         #region GetArtistDetailsQuery extensions

@@ -1,22 +1,22 @@
 ﻿using Disc.Domain.Abstractions.Repositories;
-using Disc.Domain.Entities;
 using MediatR;
+using Disc.Application.Extensions;
+using Disc.Domain.Entities;
 
 namespace Disc.Application.Requests.ArtistOperations.GetAllArtist
 {
-    internal class GetAllArtistsQueryHandler : IRequestHandler<GetAllArtistsQuery, List<Artist>>
+    internal class GetAllArtistsQueryHandler : IRequestHandler<GetAllArtistsQuery, List<GetAllArtistsQuery>>
     {
         private readonly IArtistRepository _artistRepository;
         public GetAllArtistsQueryHandler(IArtistRepository artistRepository)
         {
             _artistRepository = artistRepository;
         }
-        public async Task<List<Artist>> Handle(GetAllArtistsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetAllArtistsQuery>> Handle(GetAllArtistsQuery request, CancellationToken cancellationToken)
         {
-            //var artist = await _artistRepository.GetAllArtistsAsync();
+            var artist = (List<Artist>)(await _artistRepository.GetAllArtistsAsync(request.Size, request.Page, request.Country, request.MusicLabel));
 
-            //return artist;
-            throw new NotImplementedException();
+            return artist.ToGetAllArtistQueryList();
         }
     }
 }

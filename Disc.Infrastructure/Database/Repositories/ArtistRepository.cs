@@ -1,4 +1,5 @@
-﻿using Disc.Domain.Abstractions.Repositories;
+﻿using Disc.Application.Requests.ArtistOperations.GetAllArtist;
+using Disc.Domain.Abstractions.Repositories;
 using Disc.Domain.Entities;
 using Disc.Domain.Exceptions.ArtistExceptions;
 using Infrastructure.Database;
@@ -92,22 +93,25 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
         return results;
     }
 
-    public async Task<IEnumerable> GetAllArtistsAsync()
+    public async Task<IEnumerable> GetAllArtistsAsync(int size, int page, Country country, MusicLabel musicLabel)
     {
 
-        var test = Context.Artist
-            .Include(a => a.Country)
-            .Include(a => a.Release);
-
-        var artists = await test.Select(a => new Artist
+        if (country is not null)
         {
-            ArtistId = a.ArtistId,
-            ArtistName = a.ArtistName,
-            RealName = a.RealName,
-            Release = a.Release != null ? a.Release.ToList() : null,
-            Country = new Country { CountryName = a.Country.CountryName, CountryId = a.Country.CountryId }
-        })
-        .ToListAsync();
+            Context.Artist.Where(a => a.Country == country);
+        }
+
+        if (musicLabel is not null)
+        {
+            Context.Artist.Where(a => a.MusicLabel == musicLabel);
+        }
+
+        var artists = await Context.Artist
+            .Include(a => a.Country)
+            .Include(a => a.Release)
+            .Skip(size* (page - 1))
+            .Take(page)
+            .ToListAsync();
 
         return artists;
 
@@ -127,7 +131,7 @@ public class ArtistRepository : GenericRepository<Artist>, IArtistRepository
     {
         var results = await Context.Artist
             .AsNoTracking()
-            .Where(x => x.ArtistName.StartsWith(name))
+            .Where(x => x.ArtistName.ToLower().StartsWith(name.ToLower()))
             .ToListAsync();
         return results;
     }

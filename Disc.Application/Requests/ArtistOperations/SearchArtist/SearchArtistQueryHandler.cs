@@ -21,6 +21,7 @@ namespace Disc.Application.Requests.ArtistOperations.SearchArtist
         public async Task<SearchArtistQuery[]> Handle(SearchArtistQuery request, CancellationToken cancellationToken)
         {
             var result = await _artistRepository.SearchArtistsByNameAsync(request.ArtistName);
+
             if(result is null)
             {
                 return new SearchArtistQuery[0];

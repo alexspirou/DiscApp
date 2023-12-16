@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Discogs\**" />
+    <EmbeddedResource Remove="Discogs\**" />
+    <None Remove="Discogs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DiscogsClient" Version="2.7.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -22,10 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Disc.Application\Disc.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Discogs\" />
   </ItemGroup>
 
 </Project>

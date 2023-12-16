@@ -41,9 +41,18 @@ namespace WebApi
                 Formatting = Newtonsoft.Json.Formatting.Indented,
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             };
+
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                // Seed data during application startup
+                using (var scope = app.Services.CreateScope())
+                {
+                    var seedDataWrapper = scope.ServiceProvider.GetRequiredService<SeedData>();
+                    seedDataWrapper.GenerateTestData();
+                }
+
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -58,4 +67,5 @@ namespace WebApi
             app.Run();
         }
     }
+
 }

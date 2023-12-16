@@ -14,7 +14,7 @@ namespace Disc.Domain.Abstractions.Repositories
         Task<Artist> GetArtistByNameAsync(string name);
         Task<IEnumerable<Artist>> GetArtistsByNameAsync(IEnumerable<string> names);
         Task<uint> GetArtistIdByNameAsync(string name);
-        Task<IEnumerable> GetAllArtistsAsync();
+        Task<IEnumerable> GetAllArtistsAsync(int size, int page, Country country, MusicLabel musicLabel);
         Task<IEnumerable<Artist>> SearchArtistsByNameAsync(string name);
 
     }
